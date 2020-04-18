@@ -40,6 +40,11 @@
 */
 void Bsp_beginArduinoSerialObject( unsigned long baudrate, uint16_t frameConfig );
 
+/** This method initializes and start the SdFat file system on the onboard 8MB
+    data flash
+ */
+void Bsp_beginFileSystem();
+
 /** Returns a reference to the Primary Serial Port Object. This is implicitly 
     exposed (can't directly expose it due to racing conditions on how the colony_map.h 
     header files work).  This means that the application must cut-n-paste the following

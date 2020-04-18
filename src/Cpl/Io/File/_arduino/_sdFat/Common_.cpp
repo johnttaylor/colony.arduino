@@ -11,11 +11,8 @@
 
 #include "Cpl/Io/File/Api.h"
 #include "Cpl/Io/File/Common_.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-
+#include "Private_.h"
+#include <new>
 
 ///
 using namespace Cpl::Io::File;
@@ -25,85 +22,92 @@ Cpl::Io::Descriptor Common_::open( const char* fileEntryName, bool readOnly, boo
 {
     // Set open flags as requested
     int flags = readOnly ? O_RDONLY : O_RDWR;
-    int mode  = 0666;
     if ( forceCreate )
     {
         flags |= O_CREAT;
     }
     if ( forceEmptyFile )
     {
-        flags |= O_TRUNC;
+        flags |= O_CREAT;
+        g_arduino_sdfat_fs.remove( fileEntryName );
     }
 
+    // Allocate a file instance
+    FatFile* fileHandle = new( std::nothrow ) FatFile;
+    if ( fileHandle != nullptr )
+    {
+        // Attempt to Open the file
+        if ( !fileHandle->open( g_arduino_sdfat_fs.vwd(), fileEntryName, flags ) )
+        {
+            delete fileHandle;
+            fileHandle = 0;
+        }
+    }
 
-    // Open the file
-    Cpl::Io::Descriptor fd( ::open( Cpl::Io::File::Api::getNative( fileEntryName ), flags, mode ) );
+    // Return the file handle
+    Cpl::Io::Descriptor fd( (void*) fileHandle );
     return fd;
 }
 
 /////////////////////////////////////////////////////
 bool Common_::currentPos( Cpl::Io::Descriptor fd, unsigned long& curpos )
 {
-    if ( fd.m_fd == -1 )
+    if ( fd.m_handlePtr == 0 )
     {
         return 0;
     }
 
-    off_t pos = lseek( fd.m_fd, 0, SEEK_CUR );
-    curpos    = (unsigned long) pos;
-    return pos != (off_t) -1L;
+    FatFile* fileHandle = (FatFile*) fd.m_handlePtr;
+    curpos = fileHandle->curPosition();
+    return true;
 }
 
 
 bool Common_::setRelativePos( Cpl::Io::Descriptor fd, long deltaOffset )
 {
-    if ( fd.m_fd == -1 )
+    if ( fd.m_handlePtr == 0 )
     {
         return false;
     }
 
-    off_t pos = lseek( fd.m_fd, (off_t) deltaOffset, SEEK_CUR );
-    return pos != (off_t) -1L;
+    FatFile* fileHandle = (FatFile*) fd.m_handlePtr;
+    return fileHandle->seekCur( (int32_t) deltaOffset );
 }
 
 
 bool Common_::setAbsolutePos( Cpl::Io::Descriptor fd, unsigned long newoffset )
 {
-    if ( fd.m_fd == -1 )
+    if ( fd.m_handlePtr == 0)
     {
         return false;
     }
 
-    off_t pos = lseek( fd.m_fd, (off_t) newoffset, SEEK_SET );
-    return pos != (off_t) -1L;
+    FatFile* fileHandle = (FatFile*) fd.m_handlePtr;
+    return fileHandle->seekSet( (uint32_t)newoffset );
 }
 
 
 bool Common_::setToEof( Cpl::Io::Descriptor fd )
 {
-    if ( fd.m_fd == -1 )
+    if ( fd.m_handlePtr == 0 )
     {
         return false;
     }
 
-    return lseek( fd.m_fd, 0, SEEK_END ) != -1L;
+    FatFile* fileHandle = (FatFile*) fd.m_handlePtr;
+    return fileHandle->seekEnd( 0 );
 }
 
 
-
-// Brute force approach to get the length of the file -->set the file 
-// position indicator to EOF and use the EOF byte offset as the length
 bool Common_::length( Cpl::Io::Descriptor fd, unsigned long& length )
 {
-    if ( fd.m_fd == -1 )
+    if ( fd.m_handlePtr == 0 )
     {
         return 0; // Error -->return zero
     }
 
-    off_t cur     = lseek( fd.m_fd, 0, SEEK_CUR );
-    off_t eof     = lseek( fd.m_fd, 0, SEEK_END );
-    off_t restore = lseek( fd.m_fd, cur, SEEK_SET );
-    length        = (unsigned long) eof;
-    return (cur != (off_t) -1L) && (eof != (off_t) -1L) && (restore != (off_t) -1L);
+    FatFile* fileHandle = (FatFile*)fd.m_handlePtr;
+    length              = fileHandle->fileSize();
+    return true;
 }
 

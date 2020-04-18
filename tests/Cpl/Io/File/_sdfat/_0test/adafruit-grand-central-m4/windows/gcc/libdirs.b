@@ -1,18 +1,16 @@
+# Unit under test
+src/Cpl/Io/File/_arduino/_sdfat
+#src/Cpl/Io/File/_arduino/_sdfat/_api
+
+# tests
+src/Cpl/Io/File/_arduino/_0test
+
 # Libraries
 arduino/libraries/SdFat/src
 arduino/libraries/SdFat/src/FatLib
 arduino/libraries/Adafruit_SPIFlash/src
 arduino/libraries/Adafruit_SPIFlash/src/qspi < Adafruit_FlashTransport_QSPI_SAMD.cpp
 arduino/libraries/Adafruit_Zero_DMA_Library
-
-# Unit under test
-#src/Cpl/Io/File/_ardunio/_sdfat
-#src/Cpl/Io/File/_ardunio/_sdfat/_api
-//colony.core/src/Cpl/Io/File
-
-# tests
-#//colony.core/src/Cpl/Io/File/_0test
-
 
 # Colony Core infrastructure
 #//colony.core/src/Cpl/Text/Frame
@@ -22,11 +20,14 @@ arduino/libraries/Adafruit_Zero_DMA_Library
 #//colony.core/src/Cpl/Checksum
 //colony.core/src/Cpl/Text
 //colony.core/src/Cpl/Io
-//colony.core/src/Cpl/Dm
+//colony.core/src/Cpl/Io/File
+//colony.core/src/Cpl/Io/Stdio
+#//colony.core/src/Cpl/Dm
 #//colony.core/src/Cpl/Dm/Mp
 #//colony.core/src/Cpl/Dm/TShell
-//colony.core/src/Cpl/Itc
+#//colony.core/src/Cpl/Itc
 //colony.core/src/Cpl/System
+//colony.core/src/Cpl/System/_assert
 
 # Board specific middle-ware
 //colony.core/src/Cpl/TShell/Cmd/FreeRTOS
