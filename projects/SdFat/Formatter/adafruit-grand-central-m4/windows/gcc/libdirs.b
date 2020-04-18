@@ -23,8 +23,8 @@ arduino/libraries/Adafruit_Zero_DMA_Library
 //colony.core/src/Cpl/TShell/Cmd/FreeRTOS
 //colony.core/src/Cpl/System/FreeRTOS
 //colony.core/src/Cpl/System/FreeRTOS/_fatalerror
-//colony.core/src/Cpl/System/_trace/_arduino
 //colony.core/src/Cpl/System/_trace
+src/Cpl/System/_trace/_arduino
 src/Cpl/Io/Serial/Arduino
 src/Bsp/Adafruit/grand_central_m4/gcc
 src/Bsp/Adafruit/grand_central_m4/gcc/FreeRTOS/source
