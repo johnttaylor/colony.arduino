@@ -2,6 +2,7 @@
 #include "Arduino.h"
 #include "Bsp/Api.h"
 #include "Cpl/System/Api.h"
+#include "Cpl/System/Trace.h"
 #include "Cpl/System/FreeRTOS/Thread.h"
 #include "Cpl/Io/InputOutput.h"
 #include <Adafruit_SPIFlash.h>
@@ -15,6 +16,7 @@ extern void testcase_read1();
 extern void testcase_read2();
 extern void testcase_write1();
 extern void testcase_write2();
+extern void testcase_api1();
 
 extern Cpl::Io::InputOutput& Bsp_Serial( void );
 
@@ -33,6 +35,9 @@ void setup()
 {
     // Initialize CPL
     Cpl::System::Api::initialize();
+    CPL_SYSTEM_TRACE_ENABLE();
+    CPL_SYSTEM_TRACE_ENABLE_SECTION( "_0test" );
+
 
     // Make the current/main thread a CPL Thread
     Cpl::System::FreeRTOS::Thread::makeNativeMainThreadACplThread();
@@ -60,6 +65,7 @@ void setup()
     ::Serial.println( "Running: read1() ..." ); testcase_read1();
     ::Serial.println( "Running: write1() ..." ); testcase_write1();
     ::Serial.println( "Running: write2() ..." ); testcase_write2();
+    ::Serial.println( "Running: api1() ..." ); testcase_api1();
 
 
 

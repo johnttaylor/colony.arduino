@@ -38,8 +38,6 @@ protected:
     ///
     bool                m_dirsOnly;
     ///
-    Api::Info           m_info;
-    ///
     NameString          m_name;
     ///
     NameString          m_file;

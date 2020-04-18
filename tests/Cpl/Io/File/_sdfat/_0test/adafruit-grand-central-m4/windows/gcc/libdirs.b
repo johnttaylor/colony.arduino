@@ -1,6 +1,6 @@
 # Unit under test
 src/Cpl/Io/File/_arduino/_sdfat
-#src/Cpl/Io/File/_arduino/_sdfat/_api
+src/Cpl/Io/File/_arduino/_sdfat/_api
 
 # tests
 src/Cpl/Io/File/_arduino/_0test

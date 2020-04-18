@@ -10,136 +10,113 @@
 *----------------------------------------------------------------------------*/
 
 #include "Cpl/Io/File/Api.h"
+#include "Cpl/Io/File/Output.h"
 #include "DirList_.h"
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "Cpl/Io/File/_arduino/_sdFat/Private_.h"
+#include "FatLib/FatStructs.h"
+#include <time.h>
 
 
 ///
 using namespace Cpl::Io::File;
 
 
-/// Helper method that does all of the work for populating the Info struct
-static void populate_( Api::Info& infoOut, struct stat& filestats )
-{
-    infoOut.m_isDir     = (filestats.st_mode&S_IFDIR) == S_IFDIR;
-    infoOut.m_isFile    = (filestats.st_mode&S_IFREG) == S_IFREG;
-    infoOut.m_size      = filestats.st_size;
-    infoOut.m_mtime     = filestats.st_mtime;
-    infoOut.m_readable  = (filestats.st_mode&S_IROTH) == S_IROTH;
-    infoOut.m_writeable = (filestats.st_mode&S_IWOTH) == S_IWOTH;
-
-    if ( getuid() == filestats.st_uid )
-    {
-        infoOut.m_readable  |= (filestats.st_mode&S_IRUSR) == S_IRUSR;
-        infoOut.m_writeable |= (filestats.st_mode&S_IWUSR) == S_IWUSR;
-    }
-    if ( getgid() == filestats.st_gid )
-    {
-        infoOut.m_readable  |= (filestats.st_mode&S_IRGRP) == S_IRGRP;
-        infoOut.m_writeable |= (filestats.st_mode&S_IWGRP) == S_IWGRP;
-    }
-
-    // Make 'size' of directory behave per the Cpl::Io::File::Api semantics
-    if ( infoOut.m_isDir )
-    {
-        infoOut.m_size = 0;
-    }
-}
-
-
 
 /////////////////////////////////////////////////////
 bool Api::getInfo( const char* fsEntryName, Info& infoOut )
 {
-    struct stat filestats;
-    if ( stat( getNative( fsEntryName ), &filestats ) == 0 )
+    FatFile fd( Cpl::Io::File::Api::getNative( fsEntryName ), O_RDONLY );
+    dir_t   src;
+    if ( fd.dirEntry( &src ) )
     {
-        populate_( infoOut, filestats );
+        infoOut.m_isDir     = DIR_IS_SUBDIR( &src );
+        infoOut.m_isFile    = DIR_IS_FILE( &src );
+        infoOut.m_size      = src.fileSize;
+        infoOut.m_readable  = true;
+        infoOut.m_writeable = ( src.attributes & DIR_ATT_READ_ONLY ) == 0;
+
+        struct tm ftime ={ 0, };
+        ftime.tm_year   = FAT_YEAR( src.lastWriteDate ) - 10;   // The FAT Epoch starts at 1980
+        ftime.tm_mon    = FAT_MONTH( src.lastWriteDate ) - 1;   // The FAT Month is 1-12
+        ftime.tm_mday   = FAT_DAY( src.lastWriteDate );
+        ftime.tm_hour   = FAT_HOUR( src.lastWriteTime );
+        ftime.tm_min    = FAT_MINUTE( src.lastWriteTime );
+        ftime.tm_sec    = FAT_SECOND( src.lastWriteTime );
+        infoOut.m_mtime = mktime( &ftime );
+
         return true;
     }
 
     return false;
 }
 
-
-
 /////////////////////////////////////////////////////
 bool Api::canonicalPath( const char* relPath, Cpl::Text::String& absPath )
 {
-    char  buffer[CPL_IO_FILE_MAX_NAME + 1];
-    char* ptr = realpath( relPath, buffer );
-    if ( ptr )
-    {
-        absPath = buffer;
-        return !absPath.truncated();
-    }
-
-    return false;
+    // NOT SUPPORTED!
+    return true;
 }
 
 bool Api::getCwd( Cpl::Text::String& cwd )
 {
+    FatFile* voldir = g_arduino_sdfat_fs.vwd();
     int len;
     char* ptr    = cwd.getBuffer( len );
-    char* result = getcwd( ptr, len );
+    bool result  = voldir->getName( ptr, len );
     cwd          = getStandard( cwd );
-    return result != NULL;
+    return result;
 }
 
 
 /////////////////////////////////////////////////////
 bool Api::exists( const char* fsEntryName )
 {
-    return access( getNative( fsEntryName ), F_OK ) == 0;
+    return g_arduino_sdfat_fs.exists( getNative( fsEntryName) );
 }
 
 
 bool Api::createFile( const char* fileName )
 {
-    bool result  = false;
-    int  fd = ::open( getNative( fileName ), O_RDWR | O_CREAT | O_EXCL, 0666 );
-    if ( fd != -1 )
-    {
-        result = true;
-        ::close( fd );
-    }
+    Output fd( fileName, O_RDWR | O_CREAT | O_EXCL );
+    bool result = fd.isOpened();
+    fd.close();
 
     return result;
 }
 
 bool Api::createDirectory( const char* dirName )
 {
-    return mkdir( getNative( dirName ), 0755 ) == 0;
+    return g_arduino_sdfat_fs.mkdir( getNative( dirName ), false );
 }
 
 
 bool Api::renameInPlace( const char* oldName, const char* newName )
 {
-    NameString nativeNewName = getNative( newName );
-    return ::rename( getNative( oldName ), nativeNewName ) == 0;
+    return g_arduino_sdfat_fs.rename( getNative( oldName ), getNative( newName ) );
 }
 
 
 bool Api::moveFile( const char* oldFileName, const char* newFileName )
 {
-    // Note: Under posix, the rename() command can/will move files
     return renameInPlace( oldFileName, newFileName );
 }
 
 
 bool Api::remove( const char* fsEntryName )
 {
-    return ::remove( getNative( fsEntryName ) ) == 0;
+    if ( isDirectory( getNative( fsEntryName ) ) )
+    {
+        return g_arduino_sdfat_fs.rmdir( getNative( fsEntryName ) );
+    }
+    else
+    {
+        return g_arduino_sdfat_fs.remove( getNative( fsEntryName ) );
+    }
 }
 
 
 /////////////////////////////////////////////////////
-bool Api::walkDirectory( const char*      dirToList,
+bool Api::walkDirectory( const char* dirToList,
                          DirectoryWalker& callback,
                          int              depth,
                          bool             filesOnly,

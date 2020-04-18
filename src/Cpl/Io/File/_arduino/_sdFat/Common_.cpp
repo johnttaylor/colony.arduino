@@ -29,8 +29,7 @@ Cpl::Io::Descriptor Common_::open( const char* fileEntryName, bool readOnly, boo
     }
     if ( forceEmptyFile )
     {
-        flags |= O_CREAT;
-        g_arduino_sdfat_fs.remove( fileEntryName );
+        flags |= O_TRUNC;
     }
 
     // Allocate a file instance
@@ -38,7 +37,7 @@ Cpl::Io::Descriptor Common_::open( const char* fileEntryName, bool readOnly, boo
     if ( fileHandle != nullptr )
     {
         // Attempt to Open the file
-        if ( !fileHandle->open( g_arduino_sdfat_fs.vwd(), fileEntryName, flags ) )
+        if ( !fileHandle->open( g_arduino_sdfat_fs.vwd(), Cpl::Io::File::Api::getNative( fileEntryName ), flags ) )
         {
             delete fileHandle;
             fileHandle = 0;
@@ -46,7 +45,7 @@ Cpl::Io::Descriptor Common_::open( const char* fileEntryName, bool readOnly, boo
     }
 
     // Return the file handle
-    Cpl::Io::Descriptor fd( (void*) fileHandle );
+    Cpl::Io::Descriptor fd( (void*)fileHandle );
     return fd;
 }
 
@@ -58,7 +57,7 @@ bool Common_::currentPos( Cpl::Io::Descriptor fd, unsigned long& curpos )
         return 0;
     }
 
-    FatFile* fileHandle = (FatFile*) fd.m_handlePtr;
+    FatFile* fileHandle = (FatFile*)fd.m_handlePtr;
     curpos = fileHandle->curPosition();
     return true;
 }
@@ -71,19 +70,19 @@ bool Common_::setRelativePos( Cpl::Io::Descriptor fd, long deltaOffset )
         return false;
     }
 
-    FatFile* fileHandle = (FatFile*) fd.m_handlePtr;
-    return fileHandle->seekCur( (int32_t) deltaOffset );
+    FatFile* fileHandle = (FatFile*)fd.m_handlePtr;
+    return fileHandle->seekCur( (int32_t)deltaOffset );
 }
 
 
 bool Common_::setAbsolutePos( Cpl::Io::Descriptor fd, unsigned long newoffset )
 {
-    if ( fd.m_handlePtr == 0)
+    if ( fd.m_handlePtr == 0 )
     {
         return false;
     }
 
-    FatFile* fileHandle = (FatFile*) fd.m_handlePtr;
+    FatFile* fileHandle = (FatFile*)fd.m_handlePtr;
     return fileHandle->seekSet( (uint32_t)newoffset );
 }
 
@@ -95,7 +94,7 @@ bool Common_::setToEof( Cpl::Io::Descriptor fd )
         return false;
     }
 
-    FatFile* fileHandle = (FatFile*) fd.m_handlePtr;
+    FatFile* fileHandle = (FatFile*)fd.m_handlePtr;
     return fileHandle->seekEnd( 0 );
 }
 

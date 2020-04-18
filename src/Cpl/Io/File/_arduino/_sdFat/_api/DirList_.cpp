@@ -11,14 +11,11 @@
 
 #include "DirList_.h"
 #include "Cpl/Text/strip.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <limits.h>
-#include <dirent.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "Cpl/Io/File/_arduino/_sdFat/Private_.h"
+#include "FatLib/FatStructs.h"
+#include <time.h>
 
+#define MAX_ENTRY_NAME  (8+1+3+1)   // Short name support ONLY!
 
 //
 using namespace Cpl::Io::File;
@@ -56,60 +53,68 @@ bool DirList_::traverse( Api::DirectoryWalker& callback )
     }
 
     // Get the first item in current root
-    DIR* hdlPtr = opendir( m_name() );
-
-    // While there something in the current root
-    if ( hdlPtr )
+    FatFile currentDir( m_name(), O_RDONLY );
+    if ( currentDir.isDir() )
     {
-        struct dirent* dirPtr = readdir( hdlPtr );
-        while ( dirPtr )
-        {
-            const char* ptr = Cpl::Text::stripChars( dirPtr->d_name, "." );
-            if ( *ptr != '\0' )
-            {
-                // Construct full path for the current item
-                m_file  = m_name;
-                m_file += dirPtr->d_name;
+        currentDir.rewind();
+        FatFile file;
 
-                // Get the File Entry info for the current item
-                if ( Api::getInfo( m_file(), m_info ) )
+        while ( file.openNext( &currentDir, O_RDONLY ) )
+        {
+            // Get info for the current item in the directory
+            dir_t src;
+            if ( file.dirEntry( &src ) )
+            {
+                Api::Info info;
+                info.m_isDir     = DIR_IS_SUBDIR( &src );
+                info.m_isFile    = DIR_IS_FILE( &src );
+                info.m_size      = src.fileSize;
+                info.m_readable  = true;
+                info.m_writeable = ( src.attributes & DIR_ATT_READ_ONLY ) == 0;
+                struct tm ftime  ={ 0, };
+                ftime.tm_year    = FAT_YEAR( src.lastWriteDate ) - 10;   // The FAT Epoch starts at 1980
+                ftime.tm_mon     = FAT_MONTH( src.lastWriteDate ) - 1;   // The FAT Month is 1-12
+                ftime.tm_mday    = FAT_DAY( src.lastWriteDate );
+                ftime.tm_hour    = FAT_HOUR( src.lastWriteTime );
+                ftime.tm_min     = FAT_MINUTE( src.lastWriteTime );
+                ftime.tm_sec     = FAT_SECOND( src.lastWriteTime );
+                info.m_mtime     = mktime( &ftime );
+
+                // Construct full path for the current item
+                char entryName[MAX_ENTRY_NAME];
+                if ( file.getName( entryName, MAX_ENTRY_NAME ) )
                 {
-                    // Call back the Walker
-                    if ( (!m_filesOnly && !m_dirsOnly) || (m_filesOnly && m_info.m_isFile) || (m_dirsOnly && m_info.m_isDir) )
+                    // Callback the client
+                    if ( ( !m_filesOnly && !m_dirsOnly ) || ( m_filesOnly && info.m_isFile ) || ( m_dirsOnly && info.m_isDir ) )
                     {
-                        if ( callback.item( Api::getStandard( m_name ), dirPtr->d_name, m_info ) == Cpl::Type::Traverser::eABORT )
+                        if ( callback.item( Api::getStandard( m_name ), entryName, info ) == Cpl::Type::Traverser::eABORT )
                         {
                             completed = false;
+                            file.close();
                             break;
                         }
                     }
 
                     // Do I need to dive into a sub directory?
-                    if ( m_info.m_isDir && m_curDepth < m_depth )
+                    if ( info.m_isDir && m_curDepth < m_depth )
                     {
-                        int len = strlen( dirPtr->d_name );
-                        m_name += dirPtr->d_name;
+                        int len = strlen( entryName );
+                        m_name += entryName;
 
                         // Walk the sub directory
                         if ( !traverse( callback ) )
                         {
                             completed = false;
+                            file.close();
                             break;
                         }
                         m_name.trimRight( len );
                     }
                 }
             }
-
-            // Get next item in the current root
-            dirPtr = readdir( hdlPtr );
+            file.close();
         }
-
-
-        // Close my directory handle
-        closedir( hdlPtr );
     }
-
 
     // Housekeeping
     m_curDepth--;
