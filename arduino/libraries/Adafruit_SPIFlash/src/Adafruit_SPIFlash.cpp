@@ -16,10 +16,10 @@
 #define SPIFLASH_LOG(_sector, _count)
 #endif
 
-Adafruit_SPIFlash::Adafruit_SPIFlash() : _cache(), Adafruit_SPIFlashBase() {}
+Adafruit_SPIFlash::Adafruit_SPIFlash() : Adafruit_SPIFlashBase(), _cache() {}   // JTT/Colony.Arduino EDIT
 
 Adafruit_SPIFlash::Adafruit_SPIFlash(Adafruit_FlashTransport *transport)
-    : _cache(), Adafruit_SPIFlashBase(transport) {}
+    : Adafruit_SPIFlashBase( transport ), _cache() {}                           // JTT/Colony.Arduino EDIT
 
 //--------------------------------------------------------------------+
 // SdFat BaseBlockDRiver API
