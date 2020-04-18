@@ -97,4 +97,7 @@ void testcase_readwrite()
     writer.close();
     REQUIRE( writer.println() == false );
     REQUIRE( fd2.write( 'a' ) == false );
+
+    fd.close();
+    fd2.close();
 }

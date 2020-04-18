@@ -25,6 +25,7 @@ Cpl::Io::Descriptor Common_::open( const char* fileEntryName, bool readOnly, boo
     if ( forceCreate )
     {
         flags |= O_CREAT;
+
     }
     if ( forceEmptyFile )
     {

@@ -1,4 +1,3 @@
-#if 0 
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
 * open source project with a BSD type of licensing agreement.  See the license
@@ -10,7 +9,6 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
-#include "Catch/catch.hpp"
 #include "Cpl/Io/File/Output.h"
 #include "Cpl/Io/File/Input.h"
 #include "Cpl/Io/LineReader.h"
@@ -18,9 +16,14 @@
 #include "Cpl/System/Trace.h"
 #include "Cpl/System/_testsupport/Shutdown_TS.h"
 #include "Cpl/Text/FString.h"
-
+#include "Cpl/System/Assert.h"
 
 #define SECT_     "_0test"
+
+#define REQUIRE   CPL_SYSTEM_ASSERT
+
+void testcase_write1();
+void testcase_write2();
 
 /// 
 using namespace Cpl::Io::File;
@@ -28,10 +31,9 @@ using namespace Cpl::Io::File;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-TEST_CASE( "write", "[write]" )
+void testcase_write1()
 {
     CPL_SYSTEM_TRACE_FUNC( SECT_ );
-    Cpl::System::Shutdown_TS::clearAndUseCounter();
 
     //
     Cpl::Text::FString<256> sum;
@@ -98,14 +100,11 @@ TEST_CASE( "write", "[write]" )
 	REQUIRE( infd2.isEof() );
     reader.close();
     REQUIRE( infd2.isOpened() == false );
-
-    REQUIRE( Cpl::System::Shutdown_TS::getAndClearCounter() == 0u );
 }
 
-TEST_CASE( "write/close", "[write/close]" )
+void testcase_write2()
 {
     CPL_SYSTEM_TRACE_FUNC( SECT_ );
-    Cpl::System::Shutdown_TS::clearAndUseCounter();
 
     Output fd( "output2.txt", true, true );
     REQUIRE( fd.isOpened() );
@@ -123,8 +122,4 @@ TEST_CASE( "write/close", "[write/close]" )
     REQUIRE( fd.setToEof() == false );
     unsigned long len = 22;
     REQUIRE( fd.length( len ) == false );
-
-
-    REQUIRE( Cpl::System::Shutdown_TS::getAndClearCounter() == 0u );
 }
-#endif
