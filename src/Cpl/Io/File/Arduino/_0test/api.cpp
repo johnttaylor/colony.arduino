@@ -16,6 +16,8 @@
 #include "Cpl/Text/FString.h"
 #include <time.h>
 #include "Cpl/System/Assert.h"
+#include "Cpl/Io/File/Output.h"
+#include "Cpl/Io/File/Arduino/_sdFat/Private_.h"
 
 #define SECT_     "_0test"
 
@@ -25,6 +27,14 @@
 #define TESTINPUT_TXT_FILE_LENGTH   101
 #define TESTINPUT_TEXT_HELLO_OFFEST 0x58
 
+#define FILENAME        "tinput.txt"
+
+#define FILE_CONTENTS   "line 1\n" \
+                        "line 2\n" \
+                        "\n" \
+                        "line 4 - extra stuff, really extra stuff, okay really extra stuff\n" \
+                        "line 5\n" \
+                        "AHello World."
 
 /// 
 using namespace Cpl::Io::File;
@@ -130,31 +140,43 @@ void testcase_api1()
     NameString name;
     NameString name2;
 
+    // Clean-up from previous tests
+    g_arduino_sdfat_fs.chdir(true);
+    g_arduino_sdfat_fs.vwd()->rmRfStar();
+
+    // Create input file
+    Output fdout( FILENAME, true, true );
+    REQUIRE( fdout.isOpened() );
+    fdout.write( FILE_CONTENTS );
+    fdout.close();
+
+
     ///
     CPL_SYSTEM_TRACE_MSG( SECT_, ( "Copy, Appended..." ) );
     REQUIRE( Api::exists( "copy.txt" ) == false );
     REQUIRE( Api::exists( "copy2.txt" ) == false );
-    REQUIRE( Api::copyFile( "testinput.txt", "copy.txt" ) );
+    REQUIRE( Api::copyFile( FILENAME, "copy.txt" ) );
     REQUIRE( Api::isFile( "copy.txt" ) );
     REQUIRE( Api::size( "copy.txt" ) == TESTINPUT_TXT_FILE_LENGTH );
-    REQUIRE( Api::appendFile( "testinput.txt", "copy2.txt" ) );
+    REQUIRE( Api::appendFile( FILENAME, "copy2.txt" ) );
     REQUIRE( Api::size( "copy2.txt" ) == TESTINPUT_TXT_FILE_LENGTH );
-    REQUIRE( Api::appendFile( "testinput.txt", "copy.txt" ) );
+    REQUIRE( Api::appendFile( FILENAME, "copy.txt" ) );
     REQUIRE( Api::size( "copy.txt" ) == 2 * TESTINPUT_TXT_FILE_LENGTH );
     REQUIRE( Api::remove( "copy.txt" ) );
     REQUIRE( Api::isFile( "copy.txt" ) == false );
     REQUIRE( Api::remove( "copy2.txt" ) );
     REQUIRE( Api::exists( "copy2.txt" ) == false );
 
+    // NOTE: CanonoicalPath() method NOT SUPPORTED!!!!!
     ///
     CPL_SYSTEM_TRACE_MSG( SECT_, ( "CanonicalPath & getCwd..." ) );
-    REQUIRE( Api::canonicalPath( ".", name ) );
+    REQUIRE( Api::canonicalPath( ".", name ) == false );
     REQUIRE( Api::getCwd( name2 ) );
     CPL_SYSTEM_TRACE_MSG( SECT_, ( "[%s] ('.') =? [%s] ('cwd')", name.getString(), name2.getString() ) );
-    REQUIRE( name == name2 );
-    REQUIRE( Api::canonicalPath( "..", name ) );
+    //REQUIRE( name == name2 );
+    REQUIRE( Api::canonicalPath( "..", name ) == false );
     CPL_SYSTEM_TRACE_MSG( SECT_, ( "[%s] (cwd) startsWith? [%s] ('..')", name2.getString(), name.getString() ) );
-    REQUIRE( name2.startsWith( name ) );
+    //REQUIRE( name2.startsWith( name ) );
 
     ///
     CPL_SYSTEM_TRACE_MSG( SECT_, ( "Create, move, remove, etc. ..." ) );
@@ -166,6 +188,8 @@ void testcase_api1()
     REQUIRE( Api::createFile( "bob/uncle.txt" ) );
     REQUIRE( Api::exists( "bob/uncle.txt" ) );
     REQUIRE( Api::isFile( "bob/uncle.txt" ) );
+
+    g_arduino_sdfat_fs.ls( LS_R | LS_DATE | LS_SIZE );
 
     REQUIRE( Api::exists( "charlie" ) == false );
     REQUIRE( Api::renameInPlace( "bob", "charlie" ) );
@@ -187,38 +211,24 @@ void testcase_api1()
     REQUIRE( Api::remove( "your.txt" ) );
     REQUIRE( Api::exists( "your.txt" ) == false );
 
+    g_arduino_sdfat_fs.ls( LS_R | LS_DATE | LS_SIZE );
+
 
     ///
     CPL_SYSTEM_TRACE_MSG( SECT_, ( "Info..." ) );
-    REQUIRE( Api::exists( ".." ) );
-    REQUIRE( Api::exists( "testinput.txt" ) );
+    REQUIRE( Api::exists( FILENAME ) );
     REQUIRE( Api::exists( "nothere.txt" ) == false );
-    REQUIRE( Api::isFile( "." ) == false );
-    REQUIRE( Api::isFile( "testinput.txt" ) );
-    REQUIRE( Api::isDirectory( "." ) == true );
-    REQUIRE( Api::isDirectory( ".." ) == true );
-    REQUIRE( Api::isDirectory( "testinput.txt" ) == false );
-    REQUIRE( Api::isReadable( "." ) );
-    REQUIRE( Api::isReadable( ".." ) );
-    REQUIRE( Api::isReadable( "testinput.txt" ) );
-    REQUIRE( Api::isReadable( "testinput.txte" ) == false );
-    REQUIRE( Api::isWriteable( "." ) );
-    REQUIRE( Api::isWriteable( ".." ) );
-    REQUIRE( Api::isWriteable( "testinput.txt" ) );
-    REQUIRE( Api::isWriteable( "testinput.txtdd" ) == false );
-    REQUIRE( Api::size( "testinput.txt" ) == TESTINPUT_TXT_FILE_LENGTH );
-    time_t t1, t2, t3;
-    t1 = Api::timeModified( "." );
-    t2 = Api::timeModified( ".." );
-    t3 = Api::timeModified( "testinput.txt" );
-    name = ctime( &t2 );
-    CPL_SYSTEM_TRACE_MSG( SECT_, ( "'..' mtime           := %s", name.getString() ) );
-    name = ctime( &t1 );
-    CPL_SYSTEM_TRACE_MSG( SECT_, ( "'.' mtime            := %s", name.getString() ) );
+    REQUIRE( Api::isFile( FILENAME ) );
+    REQUIRE( Api::isDirectory( FILENAME ) == false );
+    REQUIRE( Api::isReadable( FILENAME ) );
+    REQUIRE( Api::isReadable( "tinput.xxx" ) == false );
+    REQUIRE( Api::isWriteable( FILENAME ) );
+    REQUIRE( Api::isWriteable( "tinput.tdd" ) == false );
+    REQUIRE( Api::size( FILENAME ) == TESTINPUT_TXT_FILE_LENGTH );
+    time_t t3;
+    t3 = Api::timeModified( FILENAME );
     name = ctime( &t3 );
-    CPL_SYSTEM_TRACE_MSG( SECT_, ( "'testinput.txt' mtime:= %s", name.getString() ) );
-    REQUIRE( t1 != ( (time_t)-1 ) );
-    REQUIRE( t2 != ( (time_t)-1 ) );
+    CPL_SYSTEM_TRACE_MSG( SECT_, ( "'tinput.txt' mtime:= %s", name.getString() ) );
     REQUIRE( t3 != ( (time_t)-1 ) );
 
     ///
@@ -229,6 +239,8 @@ void testcase_api1()
     REQUIRE( Api::createFile( "d1/d2/d2.txt" ) );
     REQUIRE( Api::createDirectory( "d1/d2/d3" ) );
     REQUIRE( Api::createFile( "d1/d2/d3/d3.txt" ) );
+    g_arduino_sdfat_fs.ls( LS_R | LS_DATE | LS_SIZE );
+
     {
         Walker iterator( 3 );
         CPL_SYSTEM_TRACE_MSG( SECT_, ( "Walk 'd1', 100" ) );

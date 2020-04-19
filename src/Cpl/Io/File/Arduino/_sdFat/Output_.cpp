@@ -131,6 +131,7 @@ void Output_::close()
     if ( m_outFd.m_fd != 0 )
     {
         FatFile* fileHandle = (FatFile* ) m_outFd.m_handlePtr;
+        fileHandle->sync();
         fileHandle->close();
         m_outFd.m_handlePtr = 0;
     }

@@ -9,38 +9,40 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
-#include "Cpl/Io/File/Output.h"
-#include "Cpl/Io/File/Input.h"
+#include "Cpl/Io/File/InputOutput.h"
 #include "Cpl/Io/LineReader.h"
 #include "Cpl/Io/LineWriter.h"
 #include "Cpl/System/Trace.h"
-#include "Cpl/System/_testsupport/Shutdown_TS.h"
 #include "Cpl/Text/FString.h"
 #include "Cpl/System/Assert.h"
+#include "Cpl/Io/File/Arduino/_sdFat/Private_.h"
 
 #define SECT_     "_0test"
 
 #define REQUIRE   CPL_SYSTEM_ASSERT
 
-void testcase_write1();
-void testcase_write2();
 
 /// 
 using namespace Cpl::Io::File;
 
+void testcase_readwrite();
 
 
 ////////////////////////////////////////////////////////////////////////////////
-void testcase_write1()
+void testcase_readwrite()
 {
     CPL_SYSTEM_TRACE_FUNC( SECT_ );
+
+    // Clean-up from previous tests
+    g_arduino_sdfat_fs.chdir( true );
+    g_arduino_sdfat_fs.vwd()->rmRfStar();
 
     //
     Cpl::Text::FString<256> sum;
     Cpl::Text::FString<10>  buffer( "bob" );
     char                    myBuffer[10] = { 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29 };
     int                     bytesWritten;
-    Output                  fd( "output1.txt", true, true );
+    InputOutput             fd( "output3.txt", true, true );
     REQUIRE( fd.isOpened() );
     REQUIRE( fd.write( 'a' ) );
     sum = 'a';
@@ -56,25 +58,25 @@ void testcase_write1()
     REQUIRE( fd.write( myBuffer, sizeof( myBuffer ), bytesWritten ) );
     REQUIRE( (size_t) bytesWritten == sizeof( myBuffer ) );
     for ( int i=0; i < bytesWritten; i++ ) { sum += myBuffer[i]; }
-
     fd.flush();
-    fd.close();
-    REQUIRE( fd.write( 'a' ) == false );
-    REQUIRE( fd.isOpened() == false );
 
-    Input infd( "output1.txt" );
-    REQUIRE( infd.isOpened() );
+    REQUIRE( fd.isOpened() );
     Cpl::Text::FString<256> inbuffer;
-    infd.read( inbuffer );
+    REQUIRE( fd.setAbsolutePos( 0 ) );
+    fd.read( inbuffer );
     REQUIRE( inbuffer == sum );
-    REQUIRE( infd.read( inbuffer ) == false ); // Ensure EOF is hit
-    REQUIRE( infd.isEof() );
-    infd.close();
-    REQUIRE( infd.isOpened() == false );
-
+    REQUIRE( fd.read( inbuffer ) == false ); // Ensure EOF is hit
+    REQUIRE( fd.isEof() );
+    fd.close();
+    REQUIRE( fd.isOpened() == false );
+    REQUIRE( fd.write( 'a' ) == false );
+    char dummy;
+    REQUIRE( fd.read( dummy ) == false );
+	REQUIRE( fd.isEof() );
+	REQUIRE( fd.isOpened() == false );
 
     //
-    Output fd2( "output2.txt", true, true );
+    InputOutput fd2( "output4.txt", true, true );
     Cpl::Io::LineWriter writer( fd2 );
     REQUIRE( writer.println() );
     REQUIRE( writer.println( "Hello World" ) );
@@ -82,14 +84,11 @@ void testcase_write1()
     REQUIRE( writer.print( "World" ) );
     REQUIRE( writer.print( " again!" ) );
     REQUIRE( writer.println() );
-    writer.close();
-    REQUIRE( writer.println() == false );
-    REQUIRE( fd.write( 'a' ) == false );
 
     Cpl::Text::FString<256> buffer2;
-    Input infd2( "output2.txt" );
-    REQUIRE( infd2.isOpened() );
-    Cpl::Io::LineReader reader( infd2 );
+    REQUIRE( fd2.isOpened() );
+    REQUIRE( fd2.setAbsolutePos( 0 ) );
+    Cpl::Io::LineReader reader( fd2 );
     REQUIRE( reader.readln( buffer2 ) );
     REQUIRE( buffer2.isEmpty() );
     REQUIRE( reader.readln( buffer2 ) );
@@ -97,29 +96,13 @@ void testcase_write1()
     REQUIRE( reader.readln( buffer2 ) );
     REQUIRE( buffer2 == "HelloWorld again!" );
 	REQUIRE( reader.readln( buffer2 ) == false );
-	REQUIRE( infd2.isEof() );
+	REQUIRE( fd2.isEof() );
     reader.close();
-    REQUIRE( infd2.isOpened() == false );
-}
+    REQUIRE( fd2.isOpened() == false );
+    writer.close();
+    REQUIRE( writer.println() == false );
+    REQUIRE( fd2.write( 'a' ) == false );
 
-void testcase_write2()
-{
-    CPL_SYSTEM_TRACE_FUNC( SECT_ );
-
-    Output fd( "output2.txt", true, true );
-    REQUIRE( fd.isOpened() );
     fd.close();
-    char dummyChar = 29;
-    REQUIRE( fd.write( dummyChar ) == false );
-    REQUIRE( dummyChar == 29 );
-    fd.flush();
-    
-    REQUIRE( fd.isEof() == true );
-    unsigned long pos;
-    REQUIRE( fd.currentPos( pos ) == false );
-    REQUIRE( fd.setAbsolutePos( 1 ) == false );
-    REQUIRE( fd.setRelativePos( 1 ) == false );
-    REQUIRE( fd.setToEof() == false );
-    unsigned long len = 22;
-    REQUIRE( fd.length( len ) == false );
+    fd2.close();
 }

@@ -10,7 +10,7 @@
 *----------------------------------------------------------------------------*/
 
 #include "Bsp/Api.h"
-#include "Cpl/Io/File/_arduino/_sdfat/Private_.h"
+#include "Cpl/Io/File/Arduino/_sdfat/Private_.h"
 #include <Arduino.h>
 #include <Adafruit_SPIFlash.h>
 #include <SdFat.h>

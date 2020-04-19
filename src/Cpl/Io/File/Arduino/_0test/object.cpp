@@ -18,6 +18,7 @@
 #include "Cpl/Text/FString.h"
 #include <time.h>
 #include "Cpl/System/Assert.h"
+#include "Cpl/Io/File/Arduino/_sdFat/Private_.h"
 
 #define SECT_     "_0test"
 
@@ -53,6 +54,10 @@ void testcase_objectapi()
 
 static void testcase_objectapi_absolute()
 {
+    // Clean-up from previous tests
+    g_arduino_sdfat_fs.chdir( true );
+    g_arduino_sdfat_fs.vwd()->rmRfStar();
+
     // SETUP
     CPL_SYSTEM_TRACE_FUNC( SECT_ );
     Cpl::Text::FString<20>  buffer( "bob" );

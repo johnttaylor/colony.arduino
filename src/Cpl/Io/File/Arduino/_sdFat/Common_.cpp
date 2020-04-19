@@ -37,7 +37,7 @@ Cpl::Io::Descriptor Common_::open( const char* fileEntryName, bool readOnly, boo
     if ( fileHandle != nullptr )
     {
         // Attempt to Open the file
-        if ( !fileHandle->open( g_arduino_sdfat_fs.vwd(), Cpl::Io::File::Api::getNative( fileEntryName ), flags ) )
+        if ( !fileHandle->open( g_arduino_sdfat_fs.vwd(), fileEntryName, flags ) )
         {
             delete fileHandle;
             fileHandle = 0;

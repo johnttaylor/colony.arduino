@@ -1,9 +1,9 @@
 # Unit under test
-src/Cpl/Io/File/_arduino/_sdfat
-src/Cpl/Io/File/_arduino/_sdfat/_api
+src/Cpl/Io/File/Arduino/_sdfat
+src/Cpl/Io/File/Arduino/_sdfat/_api
 
 # tests
-src/Cpl/Io/File/_arduino/_0test
+src/Cpl/Io/File/Arduino/_0test
 
 # Libraries
 arduino/libraries/SdFat/src

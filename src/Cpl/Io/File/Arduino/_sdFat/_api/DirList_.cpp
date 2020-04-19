@@ -11,7 +11,7 @@
 
 #include "DirList_.h"
 #include "Cpl/Text/strip.h"
-#include "Cpl/Io/File/_arduino/_sdFat/Private_.h"
+#include "Cpl/Io/File/Arduino/_sdFat/Private_.h"
 #include "FatLib/FatStructs.h"
 #include <time.h>
 
@@ -29,7 +29,7 @@ DirList_::DirList_( const char* rootDir, int depth, bool filesOnly, bool dirsOnl
     m_curDepth( 0 ),
     m_filesOnly( filesOnly ),
     m_dirsOnly( dirsOnly ),
-    m_name( Api::getNative( rootDir ) )
+    m_name(  rootDir  )
 {
 }
 
@@ -72,7 +72,7 @@ bool DirList_::traverse( Api::DirectoryWalker& callback )
                 info.m_readable  = true;
                 info.m_writeable = ( src.attributes & DIR_ATT_READ_ONLY ) == 0;
                 struct tm ftime  ={ 0, };
-                ftime.tm_year    = FAT_YEAR( src.lastWriteDate ) - 10;   // The FAT Epoch starts at 1980
+                ftime.tm_year    = FAT_YEAR( src.lastWriteDate ) + 10;   // The FAT Epoch starts at 1980
                 ftime.tm_mon     = FAT_MONTH( src.lastWriteDate ) - 1;   // The FAT Month is 1-12
                 ftime.tm_mday    = FAT_DAY( src.lastWriteDate );
                 ftime.tm_hour    = FAT_HOUR( src.lastWriteTime );
@@ -87,7 +87,7 @@ bool DirList_::traverse( Api::DirectoryWalker& callback )
                     // Callback the client
                     if ( ( !m_filesOnly && !m_dirsOnly ) || ( m_filesOnly && info.m_isFile ) || ( m_dirsOnly && info.m_isDir ) )
                     {
-                        if ( callback.item( Api::getStandard( m_name ), entryName, info ) == Cpl::Type::Traverser::eABORT )
+                        if ( callback.item( m_name, entryName, info ) == Cpl::Type::Traverser::eABORT )
                         {
                             completed = false;
                             file.close();

@@ -17,6 +17,7 @@
 #include "Cpl/System/_testsupport/Shutdown_TS.h"
 #include "Cpl/Text/FString.h"
 #include "Cpl/System/Assert.h"
+#include "Cpl/Io/File/Arduino/_sdFat/Private_.h"
 
 #define SECT_     "_0test"
 
@@ -51,6 +52,10 @@ using namespace Cpl::Io::File;
 ////////////////////////////////////////////////////////////////////////////////
 void testcase_read1()
 {
+    // Clean-up from previous tests
+    g_arduino_sdfat_fs.chdir( true );
+    g_arduino_sdfat_fs.vwd()->rmRfStar();
+
     // Create input file
     Output fdout( FILENAME, true, true);
     REQUIRE( fdout.isOpened() );
