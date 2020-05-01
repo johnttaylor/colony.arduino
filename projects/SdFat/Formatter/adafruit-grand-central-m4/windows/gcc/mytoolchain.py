@@ -41,8 +41,6 @@ if ( ARDUINO_BSP_VER == None ):
     ARDUINO_BSP_VER = env_error = "ARDUINO_BSP_VER"
 
 ARDUINO_SUPPORT = NQBP_PKG_ROOT()
-if ( os.environ.get( 'ARDUINO_SUPPORT' ) != None ):
-    ARDUINO_SUPPORT = NQBP_WORK_ROOT() + os.sep + os.environ.get( 'ARDUINO_SUPPORT' ) 
 
 #===================================================
 # BEGIN EDITS/CUSTOMIZATIONS

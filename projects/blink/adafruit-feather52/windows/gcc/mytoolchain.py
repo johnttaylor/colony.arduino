@@ -44,8 +44,6 @@ if ( ARDUINO_NRF_UTIL_VER == None ):
     ARDUINO_NRF_UTIL_VER = env_error = "ARDUINO_NRF_UTIL_VER"
 
 ARDUINO_SUPPORT = NQBP_PKG_ROOT()
-if ( os.environ.get( 'ARDUINO_SUPPORT' ) != None ):
-    ARDUINO_SUPPORT = NQBP_WORK_ROOT() + os.sep + os.environ.get( 'ARDUINO_SUPPORT' ) 
 
 
 #===================================================
