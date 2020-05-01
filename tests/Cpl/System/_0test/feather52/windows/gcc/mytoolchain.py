@@ -26,6 +26,7 @@ import os
 # get definition of the Options structure
 from nqbplib.base import BuildValues
 from nqbplib.my_globals import NQBP_WORK_ROOT
+from nqbplib.my_globals import NQBP_PKG_ROOT
 
 # Get the location of the compiler toolchain
 env_error = None
@@ -42,8 +43,10 @@ ARDUINO_NRF_UTIL_VER = os.environ.get( 'ARDUINO_NRF_UTIL_VER' )
 if ( ARDUINO_NRF_UTIL_VER == None ):
     ARDUINO_NRF_UTIL_VER = env_error = "ARDUINO_NRF_UTIL_VER"
 
-ARDUINO_SUPPORT = "colony.arduino"
-
+ARDUINO_SUPPORT = NQBP_PKG_ROOT()
+if ( os.environ.get( 'ARDUINO_SUPPORT' ) != None ):
+    ARDUINO_SUPPORT = NQBP_WORK_ROOT() + os.sep + os.environ.get( 'ARDUINO_SUPPORT' ) 
+    
 #===================================================
 # BEGIN EDITS/CUSTOMIZATIONS
 #---------------------------------------------------

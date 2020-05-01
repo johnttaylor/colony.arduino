@@ -40,7 +40,9 @@ ARDUINO_BSP_VER = os.environ.get( 'ARDUINO_BSP_VER' )
 if ( ARDUINO_BSP_VER == None ):
     ARDUINO_BSP_VER = env_error = "ARDUINO_BSP_VER"
 
-ARDUINO_SUPPORT = "colony.arduino"
+ARDUINO_SUPPORT = NQBP_PKG_ROOT()
+if ( os.environ.get( 'ARDUINO_SUPPORT' ) != None ):
+    ARDUINO_SUPPORT = NQBP_WORK_ROOT() + os.sep + os.environ.get( 'ARDUINO_SUPPORT' ) 
 
 #===================================================
 # BEGIN EDITS/CUSTOMIZATIONS
@@ -59,8 +61,9 @@ bsp_objects = '_BUILT_DIR_.src/Bsp/Adafruit/grand_central_m4/gcc'
 # Set project specific 'base' (i.e always used) options
 base_release = BuildValues()        # Do NOT comment out this line
 base_release.cflags       = ' -DUSING_FREERTOS -Wall -DF_CPU=120000000L -DARDUINO=10810 -DVARIANT_QSPI_BAUD_DEFAULT=50000000 -DENABLE_CACHE '
-base_release.inc         += " -I{}{}src\Bsp\Adafruit\grand_central_m4\gcc\FreeRTOS\Source\Include".format(NQBP_PKG_ROOT(), os.sep)
-base_release.inc         += ' -I{}{}src\Bsp\Adafruit\grand_central_m4\gcc\FreeRTOS\Source\portable\GCC\ARM_CM4F'.format(NQBP_PKG_ROOT(), os.sep )
+base_release.inc         += r' -I{}\src\Bsp\Adafruit\grand_central_m4\gcc\FreeRTOS\Source\Include'.format( ARDUINO_SUPPORT )
+base_release.inc         += r' -I{}\src\Bsp\Adafruit\grand_central_m4\gcc\FreeRTOS\Source\portable\GCC\ARM_CM4F'.format( ARDUINO_SUPPORT )
+
 base_release.linkflags    = '-Tflash_without_bootloader.ld'
 base_release.firstobjs    = bsp_objects;
 
