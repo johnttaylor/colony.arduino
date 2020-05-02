@@ -59,8 +59,8 @@ bsp_objects = '_BUILT_DIR_.src/Bsp/Adafruit/grand_central_m4/gcc'
 # Set project specific 'base' (i.e always used) options
 base_release = BuildValues()        # Do NOT comment out this line
 base_release.cflags       = ' -DUSING_FREERTOS -Wall -DF_CPU=120000000L -DARDUINO=10810 -DVARIANT_QSPI_BAUD_DEFAULT=50000000 -DENABLE_CACHE '
-base_release.inc         += r' -I{}\src\Bsp\Adafruit\grand_central_m4\gcc\FreeRTOS\Source\Include'.format( ARDUINO_SUPPORT )
-base_release.inc         += r' -I{}\src\Bsp\Adafruit\grand_central_m4\gcc\FreeRTOS\Source\portable\GCC\ARM_CM4F'.format( ARDUINO_SUPPORT )
+base_release.inc         += r' -I{}\src\Bsp\Adafruit\grand_central_m4\gcc\FreeRTOS\Source\Include'.format( NQBP_PKG_ROOT() )
+base_release.inc         += r' -I{}\src\Bsp\Adafruit\grand_central_m4\gcc\FreeRTOS\Source\portable\GCC\ARM_CM4F'.format( NQBP_PKG_ROOT() )
 
 base_release.linkflags    = '-Tflash_without_bootloader.ld'
 base_release.firstobjs    = bsp_objects;
