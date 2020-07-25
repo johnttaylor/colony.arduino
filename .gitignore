@@ -38,3 +38,4 @@ make.log
 *.idb
 *.pdb
 *.lst
+*.jdebug.user
