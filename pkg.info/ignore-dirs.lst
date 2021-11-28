@@ -5,3 +5,4 @@ tests/**/_arduino/
 # Ignore the .obj directories
 tests/**/gcc/src/
 tests/**/gcc/xsrc/
+tests/**/gcc/arduino/

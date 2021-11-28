@@ -1,3 +1,0 @@
-1,01-atsamd51-arduino-v9.bat,GCC-ARM compiler for Grand Central BSP 1.6.0  
-2,02-nrf52-arduino-v5.2.bat,GCC-ARM Cortex M/R cross compiler for NRF52/Arduino  
-3,03-avr-arduino-v7.3.bat,GCC-AVR cross compiler for Atmel AVR/arduino  
