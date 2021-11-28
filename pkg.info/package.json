@@ -15,23 +15,8 @@
           "name": "colony.bsp",
           "type": "git",
           "origin": "https://github.com/johnttaylor"
-        }
-      },
-      {
-        "pkgname": "nqbp",
-        "pkgtype": "foreign",
-        "adoptedDate": "Sun Nov 28 19:22:37 2021",
-        "parentDir": "xsrc",
-        "version": {
-          "semanticVersion": "2.2.0",
-          "branch": null,
-          "tag": "OUTCAST2-main-2.2.0"
         },
-        "repo": {
-          "name": "nqbp",
-          "type": "git",
-          "origin": "https://github.com/johnttaylor"
-        }
+        "depType": "S"
       },
       {
         "pkgname": "colony.core",
@@ -47,7 +32,8 @@
           "name": "colony.core",
           "type": "git",
           "origin": "https://github.com/johnttaylor"
-        }
+        },
+        "depType": "S"
       }
     ],
     "weak": [
@@ -65,7 +51,25 @@
           "name": "catch",
           "type": "git",
           "origin": "https://github.com/johnttaylor"
-        }
+        },
+        "depType": "W"
+      },
+      {
+        "pkgname": "nqbp",
+        "pkgtype": "foreign",
+        "adoptedDate": "Sun Nov 28 19:22:37 2021",
+        "parentDir": "xsrc",
+        "version": {
+          "semanticVersion": "2.2.0",
+          "branch": null,
+          "tag": "OUTCAST2-main-2.2.0"
+        },
+        "repo": {
+          "name": "nqbp",
+          "type": "git",
+          "origin": "https://github.com/johnttaylor"
+        },
+        "depType": "S"
       }
     ]
   },
@@ -75,7 +79,9 @@
       "src",
       "tests"
     ],
-    "adoptedExtras": null
+    "adoptedExtras": [
+      "top"
+    ]
   },
   "info": {
     "pkgname": "colony.arduino",
@@ -90,7 +96,13 @@
     }
   },
   "publish": {
-    "current": null,
-    "history": []
+    "current": {
+      "comment": "Publish as an Outcast2 package",
+      "version": "1.0.1",
+      "date": "Sun Nov 28 20:11:42 2021",
+      "timestamp": 1638130302
+    },
+    "history": [
+    ]
   }
 }
