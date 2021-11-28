@@ -13,27 +13,27 @@ arduino/libraries/Adafruit_SPIFlash/src/qspi < Adafruit_FlashTransport_QSPI_SAMD
 arduino/libraries/Adafruit_Zero_DMA_Library
 
 # Colony Core infrastructure
-#//colony.core/src/Cpl/Text/Frame
-#//colony.core/src/Cpl/Text/Tokenizer
-#//colony.core/src/Cpl/Memory
-//colony.core/src/Cpl/Container
-#//colony.core/src/Cpl/Checksum
-//colony.core/src/Cpl/Text
-//colony.core/src/Cpl/Io
-//colony.core/src/Cpl/Io/File
-//colony.core/src/Cpl/Io/Stdio
-#//colony.core/src/Cpl/Dm
-#//colony.core/src/Cpl/Dm/Mp
-#//colony.core/src/Cpl/Dm/TShell
-#//colony.core/src/Cpl/Itc
-//colony.core/src/Cpl/System
-//colony.core/src/Cpl/System/_assert
+#src/Cpl/Text/Frame
+#src/Cpl/Text/Tokenizer
+#src/Cpl/Memory
+src/Cpl/Container
+#src/Cpl/Checksum
+src/Cpl/Text
+src/Cpl/Io
+src/Cpl/Io/File
+src/Cpl/Io/Stdio
+#src/Cpl/Dm
+#src/Cpl/Dm/Mp
+#src/Cpl/Dm/TShell
+#src/Cpl/Itc
+src/Cpl/System
+src/Cpl/System/_assert
 
 # Board specific middle-ware
-//colony.core/src/Cpl/TShell/Cmd/FreeRTOS
-//colony.core/src/Cpl/System/FreeRTOS
-//colony.core/src/Cpl/System/FreeRTOS/_fatalerror
-//colony.core/src/Cpl/System/_trace
+src/Cpl/TShell/Cmd/FreeRTOS
+src/Cpl/System/FreeRTOS
+src/Cpl/System/FreeRTOS/_fatalerror
+src/Cpl/System/_trace
 src/Cpl/System/_trace/_arduino
 src/Cpl/Io/Serial/Arduino
 src/Bsp/Adafruit/grand_central_m4/gcc
