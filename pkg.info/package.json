@@ -80,6 +80,7 @@
       "tests"
     ],
     "adoptedExtras": [
+      "docs",
       "top"
     ]
   },
@@ -102,7 +103,6 @@
       "date": "Sun Nov 28 20:11:42 2021",
       "timestamp": 1638130302
     },
-    "history": [
-    ]
+    "history": []
   }
 }
