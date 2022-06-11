@@ -94,12 +94,18 @@
   },
   "publish": {
     "current": {
-      "comment": "Fix doxgyen errors",
+      "comment": "Pickup latest changes to colony.core, nqbp, and catch",
       "version": "1.0.2",
-      "date": "Mon May 30 20:03:36 2022",
-      "timestamp": 1653941016
+      "date": "Sat Jun 11 18:25:14 2022",
+      "timestamp": 1654971914
     },
     "history": [
+      {
+        "comment": "Fix doxgyen errors",
+        "version": "1.0.2",
+        "date": "Mon May 30 20:03:36 2022",
+        "timestamp": 1653941016
+      },
       {
         "comment": "Publish as an Outcast2 package",
         "version": "1.0.1",
