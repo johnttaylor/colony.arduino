@@ -95,7 +95,7 @@
   "publish": {
     "current": {
       "comment": "Pickup latest changes to colony.core, nqbp, and catch",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "date": "Sat Jun 11 18:25:14 2022",
       "timestamp": 1654971914
     },
