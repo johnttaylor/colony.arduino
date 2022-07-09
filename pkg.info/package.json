@@ -18,22 +18,6 @@
         }
       },
       {
-        "pkgname": "nqbp",
-        "pkgtype": "foreign",
-        "adoptedDate": "Sat Jun 11 18:19:58 2022",
-        "parentDir": "xsrc",
-        "version": {
-          "semanticVersion": "2.2.1",
-          "branch": null,
-          "tag": "OUTCAST2-main-2.2.1"
-        },
-        "repo": {
-          "name": "nqbp",
-          "type": "git",
-          "origin": "https://github.com/johnttaylor"
-        }
-      },
-      {
         "pkgname": "catch",
         "pkgtype": "overlay",
         "adoptedDate": "Sat Jun 11 18:22:44 2022",
