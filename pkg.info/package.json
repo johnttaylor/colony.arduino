@@ -94,12 +94,18 @@
   },
   "publish": {
     "current": {
-      "comment": "Pickup latest changes to colony.core, nqbp, and catch",
-      "version": "1.0.3",
-      "date": "Sat Jun 11 18:25:14 2022",
-      "timestamp": 1654971914
+      "comment": "Pickup latest changes to colony.core and nqbp",
+      "version": "1.0.4",
+      "date": "Sat Jul  9 23:31:17 2022",
+      "timestamp": 1657409477
     },
     "history": [
+      {
+        "comment": "Pickup latest changes to colony.core, nqbp, and catch",
+        "version": "1.0.3",
+        "date": "Sat Jun 11 18:25:14 2022",
+        "timestamp": 1654971914
+      },
       {
         "comment": "Fix doxgyen errors",
         "version": "1.0.2",
