@@ -95,12 +95,19 @@
   },
   "publish": {
     "current": {
-      "comment": "Pickup latest changes to colony.core and nqbp",
-      "version": "1.0.4",
-      "date": "Sat Jul  9 23:31:17 2022",
-      "timestamp": 1657409477
+      "comment": "Update to the latest package version",
+      "version": "1.0.5",
+      "date": "Sun Sep 11 22:51:29 2022",
+      "timestamp": 1662936689,
+      "changes": null
     },
     "history": [
+      {
+        "comment": "Pickup latest changes to colony.core and nqbp",
+        "version": "1.0.4",
+        "date": "Sat Jul  9 23:31:17 2022",
+        "timestamp": 1657409477
+      },
       {
         "comment": "Pickup latest changes to colony.core, nqbp, and catch",
         "version": "1.0.3",
