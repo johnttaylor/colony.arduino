@@ -22,8 +22,9 @@ static void outputLongText_( Cpl::TShell::Context_& context, bool& io, const cha
 
 
 ///////////////////////////
-Help::Help( Cpl::Container::Map<Cpl::TShell::Command>& commandList ) noexcept
-	:Command( commandList, "help" )
+Help::Help( Cpl::Container::Map<Cpl::TShell::Command>& commandList,
+			Security::Permission_T                     minPermLevel ) noexcept
+	:Command( commandList, verb, minPermLevel )
 {
 }
 
@@ -48,7 +49,10 @@ Cpl::TShell::Command::Result_T Help::execute( Cpl::TShell::Context_& context, ch
 	// Command specific help
 	if ( ( cmdPtr=cmdList.find( verb ) ) )
 	{
-		outputCmdHelp_( context, *cmdPtr, io, true );
+		if ( cmdPtr->getMinPermissionRequired() <= context.getUserPermissionLevel() )
+		{
+			outputCmdHelp_( context, *cmdPtr, io, true );
+		}
 	}
 
 	// List the commands
@@ -58,7 +62,10 @@ Cpl::TShell::Command::Result_T Help::execute( Cpl::TShell::Context_& context, ch
 
 		while ( cmdPtr && io == true )
 		{
-			outputCmdHelp_( context, *cmdPtr, io, tokens.numParameters() == 2 );
+			if ( cmdPtr->getMinPermissionRequired() <= context.getUserPermissionLevel() )
+			{
+				outputCmdHelp_( context, *cmdPtr, io, tokens.numParameters() == 2 );
+			}
 			cmdPtr = cmdList.next( *cmdPtr );
 		}
 	}
