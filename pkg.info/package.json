@@ -81,13 +81,20 @@
   },
   "publish": {
     "current": {
-      "comment": "Update to NQBP2 and latest colony.core",
-      "version": "1.0.7",
-      "date": "Fri Feb 24 02:02:25 2023",
-      "timestamp": 1677204145,
+      "comment": "adopt new version of colony core (4.4.0) and deprecated bsp package",
+      "version": "1.0.8",
+      "date": "Thu Apr 27 00:32:06 2023",
+      "timestamp": 1682555526,
       "changes": null
     },
     "history": [
+      {
+        "comment": "Update to NQBP2 and latest colony.core",
+        "version": "1.0.7",
+        "date": "Fri Feb 24 02:02:25 2023",
+        "timestamp": 1677204145,
+        "changes": null
+      },
       {
         "comment": "Clean-up TShell command (no functionality changes)",
         "version": "1.0.6",
