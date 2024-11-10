@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -62,8 +62,8 @@ public:
 		to reset and begin searching/looking-for the next start-of-frame
 		character.
 	 */
-	AsciiDecoder( char startOfFrame, char endOfFrame, char escapeChar, bool restrict=true, Cpl::Io::Input* inputSource=0 )
-		:StreamDecoder( m_buffer, BUFSIZE, inputSource )
+	AsciiDecoder( char startOfFrame, char endOfFrame, char escapeChar, bool restrict=true, Cpl::Io::Input* inputSource=0, bool blocking = true )
+		:StreamDecoder( m_buffer, BUFSIZE, inputSource, blocking )
 		, m_sof( startOfFrame )
 		, m_eof( endOfFrame )
 		, m_esc( escapeChar )

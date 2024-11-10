@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -14,6 +14,7 @@
 
 #include "Cpl/Container/MapItem.h"
 #include "Cpl/Io/Output.h"
+#include "Cpl/TShell/Security.h"
 
 
 ///
@@ -61,10 +62,15 @@ public:
 
 	/** This method returns the command's detailed help string.  Detailed
 		help is optional.  If the command does not support detailed help,
-		then 0 is returned.
+		then nullptr is returned.
 	 */
 	virtual const char* getHelp() const noexcept = 0;
 
+
+	/** Returns the minimum required permission level needed to execute the 
+	    command.
+	 */
+	virtual Security::Permission_T getMinPermissionRequired() const noexcept = 0;
 
 protected:
 	/// Constructor

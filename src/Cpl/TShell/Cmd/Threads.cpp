@@ -4,7 +4,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -20,8 +20,9 @@
 using namespace Cpl::TShell::Cmd;
 
 ///////////////////////////
-Threads::Threads( Cpl::Container::Map<Cpl::TShell::Command>& commandList ) noexcept
-	:Command( commandList, CPLTSHELLCMD_CMD_THREADS_ )
+Threads::Threads( Cpl::Container::Map<Cpl::TShell::Command>& commandList,
+				  Security::Permission_T                     minPermLevel ) noexcept
+	:Command( commandList, verb, minPermLevel )
 	, m_contextPtr( 0 )
 	, m_count( 0 )
 	, m_io( true )
@@ -48,10 +49,10 @@ Cpl::TShell::Command::Result_T Threads::execute( Cpl::TShell::Context_& context,
 
 	// Display list header
 	m_io &= context.writeFrame( " " );
-	outtext.format( "%-16s  %-1s  %-10s  %-10s", "Name", "R", "ID", "Native Hdl" );
+	outtext.format( "%-16s  %-1s  %-8s  %-10s", "Name", "R", "ID", "Native Hdl" );
 	hookHeader1( outtext );
 	m_io &= context.writeFrame( outtext );
-	outtext.format( "%-16s  %-1s  %-10s  %-10s", "----", "-", "--", "----------" );
+	outtext.format( "%-16s  %-1s  %-8s  %-10s", "----", "-", "--", "----------" );
 	hookHeader2( outtext );
 	m_io &= context.writeFrame( outtext );
 
@@ -71,7 +72,7 @@ Cpl::Type::Traverser::Status_T Threads::item( Cpl::System::Thread& t )
 	Cpl::Text::String& outtext = m_contextPtr->getOutputBuffer();
 
 	m_count++;
-	outtext.format( "%-16s  %-1s  %-10p  %-10p", t.getName(), t.isRunning() ? "Y" : "n", (void*) ( t.getId() ), (void*) ( t.getNativeHandle() ) );
+	outtext.format( "%-16s  %-1s  %-8p  %-10p", t.getName(), t.isRunning() ? "Y" : "n", (void*) ( t.getId() ), (void*) ( t.getNativeHandle() ) );
 	hookThreadEntry( outtext, t );
 	m_io &= m_contextPtr->writeFrame( outtext );
 	return Cpl::Type::Traverser::eCONTINUE;

@@ -4,7 +4,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -20,8 +20,9 @@ static const char* state2text_( eTaskState state );
 
 
 ///////////////////////////
-Threads::Threads( Cpl::Container::Map<Cpl::TShell::Command>& commandList ) noexcept
-    :Cpl::TShell::Cmd::Threads( commandList )
+Threads::Threads( Cpl::Container::Map<Cpl::TShell::Command>& commandList,
+                  Security::Permission_T                     minPermLevel ) noexcept
+    :Cpl::TShell::Cmd::Threads( commandList, minPermLevel )
 {
 }
 

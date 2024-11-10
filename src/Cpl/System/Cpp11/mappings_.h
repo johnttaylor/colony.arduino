@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -26,6 +26,8 @@
 #include <stdlib.h>
 #include <thread>
 #include "Cpl/System/FatalError.h"
+#include <chrono>
+
 
 /// PRETTY_FUNCTION macro is non-standard
 #if defined(__GNUC__)
@@ -70,7 +72,11 @@ typedef struct Cpl_System_Cpp11_Sema_Tag
 /// C++11 Mapping
 #define Cpl_System_TlsKey_T_MAP                 int
 
-
+/// Mapping
+inline unsigned long CplSystemElapsedTime_getTimeInMilliseconds_MAP()
+{
+    return (unsigned long) std::chrono::duration_cast<std::chrono::milliseconds> (std::chrono::system_clock::now().time_since_epoch()).count();
+}
 
 /// Thread Priorities
 #define CPL_SYSTEM_THREAD_PRIORITY_HIGHEST_MAP      0

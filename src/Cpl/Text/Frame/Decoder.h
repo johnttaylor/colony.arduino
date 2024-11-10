@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -80,6 +80,34 @@ public:
 	 */
 	virtual bool scan( size_t maxSizeOfFrame, char* frame, size_t& frameSize ) noexcept = 0;
 
+	/** This method is similar to the above scan() method, except that it does
+		NOT block till a 'frame' has found, instead it indicates when a 'frame' 
+		has been found by setting the 'isEof' flag to true.
+
+		False is returned if a error was encountered while reading the Input 
+		source.
+
+		CAUTION: The returned frame is NOT a null terminated string - it is
+				 ONLY a buffer with 'frameSize' number of characters stored
+				 in it.
+	 */
+	virtual bool scan( size_t maxSizeOfFrame, char* frame, size_t& frameSize, bool& isEof ) noexcept = 0;
+
+public:
+	/** This method allows 'out-of-band' reading of the input source.  If the
+		scanner is in-a-frame the method return false and does nothing.  
+
+		CAUTION: Most client/consumers of the decoder should never use this 
+				 method.  This method only has meaning/usefulness when the
+				 application KNOWS when the input source is NOT in a frame AND 
+				 that there is 'non-framed' data that can be consumed.
+
+		Attempts to read the specified number of bytes from the stream into the
+		supplied buffer.  The actual number of bytes read is returned via
+		'bytesRead'. Returns true if successful, or false if End-of-Stream
+		was encountered or if the input source is in a frame.
+	 */
+	virtual bool oobRead( void* buffer, int numBytes, int& bytesRead ) noexcept = 0;	
 
 public:
 	/// Virtual Destructor

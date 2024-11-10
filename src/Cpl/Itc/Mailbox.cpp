@@ -4,7 +4,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -20,7 +20,7 @@ using namespace Cpl::Itc;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-Mailbox::Mailbox( Cpl::System::EventLoop& myEventLoop )
+Mailbox::Mailbox( Cpl::System::Signable& myEventLoop )
     :m_eventLoop( myEventLoop )
 {
 }
@@ -60,4 +60,12 @@ void Mailbox::processMessages() noexcept
 }
 
 
+bool Mailbox::isPendingMessage() noexcept
+{
+    // Get the next message
+    Cpl::System::GlobalLock::begin();
+    Message* msgPtr = first();
+    Cpl::System::GlobalLock::end();
+    return msgPtr != nullptr;
+}
 

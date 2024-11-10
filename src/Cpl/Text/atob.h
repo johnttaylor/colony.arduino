@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -90,6 +90,22 @@ bool a2b( bool& convertedValue, const char* string, const char* trueToken="T", c
 	of converted bytes are returned.
  */
 long asciiHexToBuffer( void* dstBinary, const char* srcString, size_t dstMaxLen );
+
+/** This method will convert an 'ASCII BINARY' string to an equivalent binary
+    buffer, i.e. the reverse of bufferToAsciiBinary() in format.h.  The 
+    'reverse' argument when set to true will store the binary data starting
+    with the last byte of 'dstBinary'. 
+    
+    If the number of '1' and '0' in 'srcString' is not a multiple of eight - the 
+    'missing' bits will be set to zero in the binary output. 
+
+    If the entire string was not able to be converted then -1 is returned OR if 
+    there are non '1'/'0' characters in the srcString; else the number of 
+    converted bits are returned.  
+    
+    Note: 'srcString' MUST be a null terminated string
+ */
+long asciiBinaryToBuffer( void* dstBinary, const char* srcString, size_t dstMaxLen, bool reverse=false );
 
 
 /** This method parses a 'timestamp' with the following format: [DD ]HH:MM:SS[.sss]

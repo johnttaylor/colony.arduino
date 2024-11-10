@@ -4,7 +4,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -19,8 +19,10 @@
 using namespace Cpl::Persistent;
 
 /////////////////////
-RecordServer::RecordServer( Record* recordList[], unsigned long timingTickInMsec ) noexcept
-    : Cpl::Dm::MailboxServer( timingTickInMsec )
+RecordServer::RecordServer( Record*                             recordList[], 
+                            unsigned long                       timingTickInMsec,
+                            Cpl::System::SharedEventHandlerApi* eventHandler ) noexcept
+    : Cpl::Dm::MailboxServer( timingTickInMsec, eventHandler )
     , Cpl::Itc::CloseSync( *((Cpl::Itc::PostApi*)this) )
     , m_records( recordList )
     , m_opened( false )

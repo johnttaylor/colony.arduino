@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -14,7 +14,7 @@
 
 #include "Cpl/Itc/PostApi.h"
 #include "Cpl/Container/SList.h"
-#include "Cpl/System/EventLoop.h"
+#include "Cpl/System/Signable.h"
 
 
 ///
@@ -34,7 +34,7 @@ class Mailbox :
 {
 public:
     /// Constructor
-    Mailbox( Cpl::System::EventLoop& myEventLoop );
+    Mailbox( Cpl::System::Signable& myEventLoop );
 
 
 public:
@@ -51,9 +51,15 @@ protected:
     virtual void processMessages() noexcept;
 
 
+    /** This method IS thread safe.
+
+        This method returns true if there is at least one queued ITC message
+     */
+    bool isPendingMessage() noexcept;
+
 protected:
     /// The EventLoop that I wait-on/dispatch-msgs-from
-    Cpl::System::EventLoop& m_eventLoop;
+    Cpl::System::Signable& m_eventLoop;
 
 };
 

@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -166,6 +166,30 @@ public:
 
 	/// See Cpl::Text::String
 	char* getBuffer( int& maxAllowedLength );
+
+	/// Make parent method visible
+	using Cpl::Text::String::operator=;
+
+	/// Make parent method visible
+	using Cpl::Text::String::operator+=;
+
+	/// Assignment
+	Cpl::Text::String& operator=( const String& string );
+
+	/// Assignment
+	Cpl::Text::String& operator=( const char* string );
+
+	/// Assignment
+	Cpl::Text::String& operator=( char c );
+
+	/// Append
+	Cpl::Text::String & operator +=( const String& string );
+
+	/// Append
+	Cpl::Text::String& operator +=( const char* string );
+
+	/// Append
+	Cpl::Text::String& operator +=( char c );
 
 public:
 	/// See Cpl::Container::Key

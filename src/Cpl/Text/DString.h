@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -14,7 +14,7 @@
 
 #include "Cpl/Text/String_.h"
 #include "colony_config.h"
-
+#include <new>
 
 ///
 namespace Cpl {
@@ -105,17 +105,8 @@ public:
 
 public:
     ///@{
-    /// Assignment
-    Cpl::Text::String & operator =( const DString& string );
-
 	/// Assignment
-    Cpl::Text::String& operator =( const Cpl::Text::String& string );
-
-	/// Assignment
-    Cpl::Text::String& operator =( const char* string );
-
-	/// Assignment
-    Cpl::Text::String& operator =( char c );
+	Cpl::Text::String& operator =( const DString& string );
 
 	/// Assignment
     Cpl::Text::String& operator =( int num );
@@ -136,17 +127,18 @@ public:
     Cpl::Text::String& operator =( unsigned long long num );
 	///@}
 
+	/// Make parent method visible
+	using Cpl::Text::String::operator=;
+
+	/// Make parent method visible
+	using Cpl::Text::String::operator+=;
+
 public:
 	///@{
-	/// Append
-    Cpl::Text::String & operator +=( const String& string );
 
 	/// Append
-    Cpl::Text::String& operator +=( const char* string );
-
-	/// Append
-    Cpl::Text::String& operator +=( char c );
-
+	Cpl::Text::String& operator +=( const DString& string );
+		
 	/// Append
     Cpl::Text::String& operator +=( int num );
 

@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -16,6 +16,7 @@
 #include "Cpl/System/Semaphore.h"
 #include "Cpl/System/Signable.h"
 #include "Cpl/System/EventFlag.h"
+#include "Cpl/System/SharedEventHandler.h"
 #include "Cpl/System/TimerManager.h"
 
 
@@ -59,7 +60,8 @@ public:
 
         A fatal error is generated if 'timeOutPeriodInMsec' is set to zero.
      */
-    EventLoop( unsigned long timeOutPeriodInMsec = OPTION_CPL_SYSTEM_EVENT_LOOP_TIMEOUT_PERIOD );
+    EventLoop( unsigned long          timeOutPeriodInMsec = OPTION_CPL_SYSTEM_EVENT_LOOP_TIMEOUT_PERIOD,
+               SharedEventHandlerApi* eventHandler        = 0 );
 
     /// Virtual destructor
     virtual ~EventLoop() {};
@@ -81,6 +83,13 @@ protected:
         and pending Event Flag events. This method should always be wrapped
         in a loop (typically a forever loop).
         
+        If the 'skipWait' argument is set to true then the method does not 
+        wait for event - it simply processing the current event flags and
+        timers. The use scenario for skipping the wait is for child classes
+        to execute the event loop multiple times to drain their message/notifications
+        queues one message/notification at a time (i.e. give equal time/priority
+        to all types of events)
+
         The method typically returns true.  The method only returns false if
         the pleaseStop() method was called on the Event Loop instance.
 
@@ -105,11 +114,21 @@ protected:
                     <child specific event processing>
                 }
             }
+            stopEventLoop()
         }
     
         @endcode
      */
-    virtual bool waitAndProcessEvents() noexcept;
+    virtual bool waitAndProcessEvents( bool skipWait = false ) noexcept;
+
+    /** This method is used to clean-up the Event Loop's when the thread is
+        being stopped.
+
+        This method is intended to be used by child classes that are extending
+        the Event Loop.  For this use case - this method MUST be called once
+        AFTER the event-processing loop has exited.
+     */
+    virtual void stopEventLoop() noexcept;
 
 protected:
     /** This method is used (by the concrete child class(es)) to process one
@@ -118,9 +137,11 @@ protected:
         each Event Flag that is set.  The 'eventNumber' (which is zero based)
         identifies which Event Flag is/was set.
 
-        The default implementation of this method does NOTHING.
+        If no ShareEventHandler was provided when the event loop was created,
+        the default implementation of this method does NOTHING; else the
+        ShareEventHandler instance is used to process the event flag/number.
      */
-    virtual void processEventFlag( uint8_t eventNumber ) noexcept {};
+    virtual void processEventFlag( uint8_t eventNumber ) noexcept;
 
 public:
     /// See Cpl::System::Signable
@@ -160,11 +181,17 @@ protected:
     /// A pointer to the thread the Event Loop executes in
     Thread*                 m_myThreadPtr;
 
+    /// My shared event handler (if I have one)
+    SharedEventHandlerApi*  m_eventHandler;
+    
     /// Semaphore associated with the mailbox (note: the Thread semaphore is NOT used)
     Cpl::System::Semaphore  m_sema;
 
     /// Timeout period for waiting on the next event
     unsigned long           m_timeout;
+
+    /// Timestamp, in milliseconds, of start of event/wait loop
+    unsigned long           m_timeStartOfLoop;
 
     /// The variable holds the current state of all Event Flags
     Cpl_System_EventFlag_T  m_events;

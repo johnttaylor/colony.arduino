@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -33,20 +33,19 @@ namespace Frame {
 class StreamDecoder : public Decoder_
 {
 protected:
-	/// Input stream
-	Cpl::Io::Input* m_srcPtr;
-
-protected:
 	/** Constructor.  The 'inputSource' can optionally be specified at
 		construction time or defer till later (the default is: later).  However,
 		the "input source" MUST be specified BEFORF scan() is called or a
 		fatal error will be generated.  See Cpl::Text::Frame::Decoder_ for
 		details about the other constructor arguments.
 
+		When the 'blocking' argument is set to false - decoder will not 
+		block while waiting on input data.  The default behavior is to BLOCK.
+
 		NOTE: A sub-class IS required to actual create an instance of a
 		StreamDecoder.
 	 */
-	StreamDecoder( char rawInputBuffer[], size_t sizeOfRawInputBuffer, Cpl::Io::Input* inputSource=0 );
+	StreamDecoder( char rawInputBuffer[], size_t sizeOfRawInputBuffer, Cpl::Io::Input* inputSource=0, bool blocking = true );
 
 
 public:
@@ -60,6 +59,12 @@ protected:
 	/// See Cpl::Text::Frame::Decoder_
 	bool read( void* buffer, int numBytes, int& bytesRead );
 
+protected:
+	/// Input stream
+	Cpl::Io::Input* m_srcPtr;
+
+	/// Block semantics
+	bool			m_blocking;
 };
 
 

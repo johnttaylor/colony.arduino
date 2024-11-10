@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -85,69 +85,20 @@ public:
 	/// Destructor
 	~DFString();
 
-public:
-	///@{
-	/// Assignment
-	inline Cpl::Text::String& operator =( const DFString& string ) { copyIn( string, string.length() ); return *this; }
-
-	/// Assignment
-    Cpl::Text::String& operator=( const String& string );
-
-	/// Assignment
-    Cpl::Text::String& operator=( const char* string );
-
-	/// Assignment
-    Cpl::Text::String& operator=( char c );
-
-	/// Assignment
-    Cpl::Text::String& operator=( int num );
-
-	/// Assignment
-    Cpl::Text::String& operator=( unsigned int num );
-
-	/// Assignment
-    Cpl::Text::String& operator=( long num );
-
-	/// Assignment
-    Cpl::Text::String& operator=( long long num );
-
-	/// Assignment
-    Cpl::Text::String& operator=( unsigned long num );
-
-	/// Assignment
-    Cpl::Text::String& operator=( unsigned long long num );
-	///@}
 
 public:
-	///@{
-	/// Append
-    Cpl::Text::String & operator +=( const String& string );
+	/// Make parent method visible
+	using Cpl::Text::String::operator=;
 
 	/// Append
-    Cpl::Text::String& operator +=( const char* string );
+	Cpl::Text::String& operator =( const DFString& string );
+
+public:
+	/// Make parent method visible
+	using Cpl::Text::String::operator+=;
 
 	/// Append
-    Cpl::Text::String& operator +=( char c );
-
-	/// Append
-    Cpl::Text::String& operator +=( int num );
-
-	/// Append
-    Cpl::Text::String& operator +=( unsigned int num );
-
-	/// Append
-    Cpl::Text::String& operator +=( long num );
-
-	/// Append
-    Cpl::Text::String& operator +=( long long num );
-
-	/// Append
-    Cpl::Text::String& operator +=( unsigned long num );
-
-	/// Append
-    Cpl::Text::String& operator +=( unsigned long long num );
-	///@}
-
+	Cpl::Text::String& operator +=( const DFString& string );
 
 protected: // Helper methods
 	/** Returns the need memory size in "block units".  Note: The size calculation

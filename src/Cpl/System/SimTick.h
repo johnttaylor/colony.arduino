@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -18,14 +18,6 @@
 #include "Cpl/System/Semaphore.h"
 #include "Cpl/Container/Item.h"
 
-
-/** The amount of (real) time, in milliseconds, for the simulated-tick engine to
-    wait for at least one response from a simulated-tick-thread before aborting
-    an advance() command (i.e. declaring all threads terminated OR deadlocked)
- */
-#ifndef OPTION_CPL_SYSTEM_SIM_TICK_NO_ACTIVITY_LIMIT
-#define OPTION_CPL_SYSTEM_SIM_TICK_NO_ACTIVITY_LIMIT    (2*1000)
-#endif
 
 /** Minimum number of ticks required to advance the simulated time.  This
     parameter is a work-around for a non-Real Time OS (such as Windoze) which

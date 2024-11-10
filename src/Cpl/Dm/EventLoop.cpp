@@ -4,7 +4,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -24,8 +24,9 @@
 using namespace Cpl::Dm;
 
 /////////////////////
-EventLoop::EventLoop( unsigned long timingTickInMsec ) noexcept
-    :Cpl::System::EventLoop( timingTickInMsec )
+EventLoop::EventLoop( unsigned long                       timingTickInMsec,
+                      Cpl::System::SharedEventHandlerApi* eventHandler ) noexcept
+    :Cpl::System::EventLoop( timingTickInMsec, eventHandler )
 {
 }
 
@@ -37,12 +38,13 @@ void EventLoop::appRun()
     bool run = true;
     while ( run )
     {
-        run = waitAndProcessEvents();
+        run = waitAndProcessEvents( isPendingPendingChangingNotifications() );
         if ( run )
         {
             processChangeNotifications();
         }
     }
+    stopEventLoop();
 }
 
 void EventLoop::processChangeNotifications() noexcept
@@ -64,7 +66,7 @@ void EventLoop::processChangeNotifications() noexcept
         modelPoint.processSubscriptionEvent_( *subscriberPtr, ModelPoint::eNOTIFYING );
 
         // Execute the callback
-        subscriberPtr->genericModelPointChanged_( modelPoint );
+        subscriberPtr->genericModelPointChanged_( modelPoint, *subscriberPtr );
 
         // Update the subscriber's state
         modelPoint.processSubscriptionEvent_( *subscriberPtr, ModelPoint::eNOTIFY_COMPLETE );
@@ -88,3 +90,10 @@ void EventLoop::removePendingChangingNotification_( SubscriberApi& subscriber ) 
     Cpl::System::GlobalLock::end();
 }
 
+bool EventLoop::isPendingPendingChangingNotifications() noexcept
+{
+    Cpl::System::GlobalLock::begin();
+    bool pending = m_pendingMpNotifications.first() != nullptr;
+    Cpl::System::GlobalLock::end();
+    return pending;
+}

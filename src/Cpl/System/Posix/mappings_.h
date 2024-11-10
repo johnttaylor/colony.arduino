@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -69,6 +69,15 @@
 
 /// Mapping
 #define CPL_IO_FILE_MAX_NAME_MAP                PATH_MAX
+
+
+/// Mapping
+inline unsigned long CplSystemElapsedTime_getTimeInMilliseconds_MAP()
+{
+    struct timespec tm;
+    clock_gettime( CLOCK_MONOTONIC, &tm );
+    return tm.tv_sec * 1000 + tm.tv_nsec / 1000000;
+}
 
 //
 // Thread Priorities
