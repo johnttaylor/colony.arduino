@@ -2,8 +2,8 @@
 # TOOLCHAIN
 #
 #   Host:       Windows
-#   Compiler:   GCC arm-M/R
-#   Target:     Renesas R7FA4M1 / Arduino
+#   Compiler:   avr-gcc 
+#   Target:     Atmel SAM5D1-xxx / Ardunio
 #   Output:     .BIN file
 #------------------------------------------------------------------------------
 
@@ -15,15 +15,15 @@ from nqbplib import my_globals
 class ToolChain( base.ToolChain ):
 
     #--------------------------------------------------------------------------
-    def __init__( self, exename, prjdir, build_variants, env_tools, env_support, env_cc_ver, env_bsp_ver, default_variant='release', env_error=None, override_freertos_config=False ):
+    def __init__( self, exename, prjdir, build_variants, env_support, env_bsp_ver, default_variant='arduino', env_error=None, override_freertos_config=False ):
         base.ToolChain.__init__( self, exename, prjdir, build_variants, default_variant )
         self._ccname   = 'GCC Arm-Cortex M4 (no eabi) Compiler'
-        self._cc       = os.path.join( env_tools, 'tools', 'arm-none-eabi-gcc', env_cc_ver, 'bin', 'arm-none-eabi-gcc' )
-        self._asm      = os.path.join( env_tools, 'tools', 'arm-none-eabi-gcc', env_cc_ver, 'bin', 'arm-none-eabi-gcc' )
-        self._ld       = os.path.join( env_tools, 'tools', 'arm-none-eabi-gcc', env_cc_ver, 'bin', 'arm-none-eabi-gcc' )
-        self._ar       = os.path.join( env_tools, 'tools', 'arm-none-eabi-gcc', env_cc_ver, 'bin', 'arm-none-eabi-ar' )
-        self._objcpy   = os.path.join( env_tools, 'tools', 'arm-none-eabi-gcc', env_cc_ver, 'bin', 'arm-none-eabi-objcopy' )
-        self._printsz  = os.path.join( env_tools, 'tools', 'arm-none-eabi-gcc', env_cc_ver, 'bin', 'arm-none-eabi-size' )
+        self._cc       = 'arm-none-eabi-gcc'
+        self._asm      = 'arm-none-eabi-gcc'
+        self._ld       = 'arm-none-eabi-gcc'
+        self._ar       = 'arm-none-eabi-ar'
+        self._objcpy   = 'arm-none-eabi-objcopy'
+        self._printsz  = 'arm-none-eabi-size'
 
         self._asm_ext  = 'asm'    
         self._asm_ext2 = 'S'   
@@ -40,18 +40,18 @@ class ToolChain( base.ToolChain ):
         self._link_output = '-o'
 
         # Define paths
-        uno_src_path         = os.path.join( my_globals.NQBP_WORK_ROOT(), env_support, 'arduino', 'hardware', 'renesas_uno', env_bsp_ver )
-        sdk_src_path         = os.path.join( uno_src_path, 'cores', 'arduino' )
-        arduino_src_path     = os.path.join( env_tools, "..", "arduino", 'tools')
+        samd_src_path         = os.path.join( my_globals.NQBP_WORK_ROOT(), env_support, 'arduino', 'hardware', 'samd', env_bsp_ver )
+        sdk_src_path          = os.path.join( samd_src_path, 'cores', 'arduino' )
+        arduino_src_path      = os.path.join( my_globals.NQBP_WORK_ROOT(), env_support, "arduino", 'tools')
         self._base_release.inc = self._base_release.inc + \
                 ' -I' + sdk_src_path + \
-                ' -I' + uno_src_path + r'\cores\arduino' + \
-                ' -I' + uno_src_path + r'\cores\arduino\USB' + \
-                ' -I' + uno_src_path + r'\variants\grand_central_m4' + \
-                ' -I' + uno_src_path + r'\libraries\Wire' + \
-                ' -I' + uno_src_path + r'\libraries\Spi' + \
-                ' -I' + uno_src_path + r'\libraries\I2S' + \
-                ' -I' + uno_src_path + r'\libraries\I2S' + \
+                ' -I' + samd_src_path + r'\cores\arduino' + \
+                ' -I' + samd_src_path + r'\cores\arduino\USB' + \
+                ' -I' + samd_src_path + r'\variants\grand_central_m4' + \
+                ' -I' + samd_src_path + r'\libraries\Wire' + \
+                ' -I' + samd_src_path + r'\libraries\Spi' + \
+                ' -I' + samd_src_path + r'\libraries\I2S' + \
+                ' -I' + samd_src_path + r'\libraries\I2S' + \
                 ' -I' + arduino_src_path + r'\CMSIS\4.5.0\CMSIS\Include' + \
                 ' -I' + arduino_src_path + r'\CMSIS-ATMEL\1.2.0\CMSIS\Device\ATMEL' 
 
@@ -65,12 +65,12 @@ class ToolChain( base.ToolChain ):
         cpp_and_c_flags                 = ' -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500'
         self._base_release.cflags       = self._base_release.cflags + common_flags + cpp_and_c_flags + asm_and_compile_flags + ' -g'
         self._base_release.c_only_flags = self._base_release.c_only_flags + ' -std=gnu11'
-        self._base_release.cppflags     = self._base_release.cppflags + ' -std=gnu++11 -fno-threadsafe-statics -fno-rtti -fno-exceptions -DARDUINO_BSP_VERSION=\\"' + env_bsp_ver + '\\"'
+        self._base_release.cppflags     = self._base_release.cppflags + ' -std=gnu++14 -fno-threadsafe-statics -fno-rtti -fno-exceptions -DARDUINO_BSP_VERSION=\\"' + env_bsp_ver + '\\"'
         self._base_release.cppflags    += ' -Wno-restrict -Wno-address-of-packed-member -Wno-class-memaccess'
         self._base_release.asmflags     = asm_and_compile_flags + ' -c -x assembler-with-cpp'
 
-        linker_search_path1          = os.path.join(uno_src_path, 'variants', 'grand_central_m4', "linker_scripts", "gcc" )
-        linker_search_path2          = os.path.join(uno_src_path, 'variants', 'grand_central_m4' )
+        linker_search_path1          = os.path.join(samd_src_path, 'variants', 'grand_central_m4', "linker_scripts", "gcc" )
+        linker_search_path2          = os.path.join(samd_src_path, 'variants', 'grand_central_m4' )
         #self._base_release.linklibs  = ' -Wl,--start-group -larm_cortexM4lf_math -lm -lstdc++ -Wl,--end-group'
         self._base_release.linklibs  = ' -Wl,--start-group -lm -lstdc++ -Wl,--end-group'
         self._base_release.linkflags = common_flags + ' -Wl,--gc-sections -save-temps -L{} -L{} -Wl,-Map,{}.map  -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -Wl,--cref -Wl,--check-sections'.format(linker_search_path1, linker_search_path2, exename)
