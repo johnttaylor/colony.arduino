@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -197,7 +197,7 @@ public:
 
 
 ////////////////////////////////////////////////////////////////////////////////
-class Master : public Cpl::System::EventLoop, public Cpl::System::Timer
+class MasterT : public Cpl::System::EventLoop, public Cpl::System::Timer
 {
 public:
     ///
@@ -211,7 +211,7 @@ public:
 
 public:
     ///
-    Master( unsigned long timerResolution, unsigned long delayMsecs,
+    MasterT( unsigned long timerResolution, unsigned long delayMsecs,
             const char* nameObj1, unsigned long timer1DurationObj1, unsigned long timer2DurationObj1,
             const char* nameObj2, unsigned long timer1DurationObj2, unsigned long timer2DurationObj2,
             Cpl::System::Signable& waiter )

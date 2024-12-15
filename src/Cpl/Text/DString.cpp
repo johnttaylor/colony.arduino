@@ -4,7 +4,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -315,24 +315,6 @@ Cpl::Text::String& DString::operator =( const DString& string )
 	return *this;
 }
 
-Cpl::Text::String& DString::operator =( const Cpl::Text::String& string )
-{
-	copyIn( string, string.length() );
-	return *this;
-}
-
-Cpl::Text::String& DString::operator =( const char* string )
-{
-	copyIn( string, string ? strlen( string ) : 0 );
-	return *this;
-}
-
-Cpl::Text::String& DString::operator =( char c )
-{
-	copyIn( &c, 1 );
-	return *this;
-}
-
 Cpl::Text::String& DString::operator =( int num )
 {
 	FString<maxIntegerChars_> string( num );
@@ -340,7 +322,7 @@ Cpl::Text::String& DString::operator =( int num )
 	return *this;
 }
 
-Cpl::Text::String& DString::operator =( unsigned num )
+Cpl::Text::String& DString::operator =( unsigned int num )
 {
 	FString<maxIntegerChars_> string( num );
 	copyIn( string, string.length() );
@@ -376,23 +358,12 @@ Cpl::Text::String& DString::operator =( unsigned long long num )
 }
 
 
-Cpl::Text::String& DString::operator +=( const Cpl::Text::String& string )
+Cpl::Text::String& DString::operator +=( const DString& string )
 {
 	appendTo( string, string.length() );
 	return *this;
 }
 
-Cpl::Text::String& DString::operator +=( const char* string )
-{
-	appendTo( string, string ? strlen( string ) : 0 );
-	return *this;
-}
-
-Cpl::Text::String& DString::operator +=( char c )
-{
-	appendTo( &c, 1 );
-	return *this;
-}
 
 Cpl::Text::String& DString::operator +=( int num )
 {

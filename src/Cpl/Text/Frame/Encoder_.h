@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -95,6 +95,11 @@ protected:
 
 	/// Helper method - implemented by the child class
 	virtual bool append( char src ) noexcept = 0;
+
+	/** Returns the encoded/escaped value for the specified special character.  
+		The default implementation simply returns 'charToBeEscaped'
+	 */
+	virtual char encodeChar( char charToBeEscaped );
 };
 
 

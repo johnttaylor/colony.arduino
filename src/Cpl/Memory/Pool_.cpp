@@ -4,7 +4,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -22,8 +22,9 @@ using namespace Cpl::Memory;
 
 /////////////////////////////
 Pool_::Pool_( BlockInfo_ infoBlocks[], size_t blockSize, size_t alignedBlockSize, size_t numBlocks, void* arrayOfBlocks, bool fatalErrors )
-	:m_blockSize( blockSize ),
-	m_fatalErrors( fatalErrors )
+	: m_blockSize( blockSize )
+	, m_alignedBlockSize( alignedBlockSize )
+	, m_fatalErrors( fatalErrors )
 {
 	// Trap possible errors
 	if ( !infoBlocks )
@@ -52,6 +53,11 @@ Pool_::~Pool_()
 }
 
 /////////////////////////////
+size_t Pool_::wordSize() const noexcept
+{
+	return  m_alignedBlockSize;
+}
+
 void* Pool_::allocate( size_t numbytes )
 {
 	const void* ptr = 0;

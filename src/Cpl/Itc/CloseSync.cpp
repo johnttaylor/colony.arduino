@@ -4,7 +4,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -24,9 +24,9 @@ CloseSync::CloseSync( PostApi& myMbox ) noexcept
 
 
 ///////////////////
-bool CloseSync::close( void )
+bool CloseSync::close( void* args )
 {
-    ClosePayload        payload;
+    ClosePayload        payload(args);
     SyncReturnHandler   srh;
     CloseMsg 	        msg( *this, payload, srh );
     m_mbox.postSync( msg );

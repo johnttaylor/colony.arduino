@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -16,22 +16,6 @@
 #include "Cpl/TShell/Cmd/Command.h"
 
 
-
-/** Command
-									  "         1         2         3         4         5         6         7         8"
-									  "12345678901234567890123456789012345678901234567890123456789012345678901234567890"
-*/
-#define CPLTSHELLCMD_CMD_TPRINT_	  "tprint"
-/// Usage
-#define CPLTSHELLCMD_USAGE_TPRINT_    "tprint [\"<text>\"]"
-
-/// Detailed Help text
-#ifndef CPLTSHELLCMD_DETAIL_TPRINT_  
-#define CPLTSHELLCMD_DETAIL_TPRINT_   "  Outputs the optionally specified text with the current elasped time is\n" \
-                                      "  prepended to the text."
-
-
-#endif // ifndef allows detailed help to be compacted down to a single character if FLASH/code space is an issue
 
 ///
 namespace Cpl {
@@ -47,16 +31,31 @@ namespace Cmd {
 class TPrint : public Command
 {
 public:
+    /// The command verb/identifier
+    static constexpr const char* verb = "tprint";
+
+    /// The command usage string
+    static constexpr const char* usage = R"(tprint ["<text>"])";
+
+    /** The command detailed help string (recommended that lines do not exceed 80 chars)
+                                                          1         2         3         4         5         6         7         8
+                                                 12345678901234567890123456789012345678901234567890123456789012345678901234567890
+     */
+    static constexpr const char* detailedHelp = "  Outputs the optionally specified text with the current elapsed time is\n" \
+                                                "  prepended to the text.";
+
+public:
 	/// See Cpl::TShell::Command
-	const char* getUsage() const noexcept { return CPLTSHELLCMD_USAGE_TPRINT_; }
+	const char* getUsage() const noexcept { return usage; }
 
 	/// See Cpl::TShell::Command
-	const char* getHelp() const noexcept { return CPLTSHELLCMD_DETAIL_TPRINT_; }
+	const char* getHelp() const noexcept { return detailedHelp; }
 
 
 public:
 	/// Constructor
-	TPrint( Cpl::Container::Map<Cpl::TShell::Command>& commandList ) noexcept;
+	TPrint( Cpl::Container::Map<Cpl::TShell::Command>& commandList,
+            Security::Permission_T                     minPermLevel=OPTION_TSHELL_CMD_COMMAND_DEFAULT_PERMISSION_LEVEL ) noexcept;
 
 
 public:

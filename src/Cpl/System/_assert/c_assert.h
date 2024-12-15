@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -14,7 +14,7 @@
 
 #include <stdbool.h>
 
-#ifdef _cpluscplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -27,7 +27,7 @@ extern "C" {
  */
 void cpl_system_assert_c_wrapper( bool true_expression, const char* file, unsigned line, const char* func );
 
-#ifdef _cpluscplus
+#ifdef __cplusplus
 }
 #endif
 

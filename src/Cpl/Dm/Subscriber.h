@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -38,7 +38,7 @@ protected:
     ModelPoint*                     m_point;
 
     /// Reference to subscriber's EventFlag/Mailbox server
-    Cpl::Dm::EventLoop&            m_eventLoopHdl;
+    Cpl::Dm::EventLoop&             m_eventLoopHdl;
 
     /// Sequence number of the subscriber
     uint16_t                        m_seqNumber;
@@ -82,7 +82,7 @@ class Subscriber : public SubscriberBase
 {
 public:
     /// Type safe change notification.  See Cpl::Dm::SubscriberApi
-    virtual void modelPointChanged( MP& modelPointThatChanged ) noexcept = 0;
+    virtual void modelPointChanged( MP& modelPointThatChanged, SubscriberApi& clientObserver ) noexcept = 0;
 
 public:
     /// Constructor
@@ -90,7 +90,7 @@ public:
 
 protected:
     /// See Cpl::Dm::SubscriberApi
-    void genericModelPointChanged_( ModelPoint& modelPointThatChanged ) noexcept { modelPointChanged( *((MP*) &modelPointThatChanged) ); }
+    void genericModelPointChanged_( ModelPoint& modelPointThatChanged, SubscriberApi& clientObserver ) noexcept { modelPointChanged( *((MP*) &modelPointThatChanged), clientObserver ); }
 };
 
 

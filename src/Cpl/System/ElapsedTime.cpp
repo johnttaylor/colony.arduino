@@ -4,7 +4,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -39,7 +39,7 @@ ElapsedTime::Precision_T & ElapsedTime::Precision_T::operator =( uint32_t millis
     return setFromMilliseconds( milliseconds );
 }
 
-bool ElapsedTime::Precision_T::operator > ( Precision_Tag other ) const
+bool ElapsedTime::Precision_T::operator > ( Precision_T other ) const
 {
     if ( m_seconds > other.m_seconds ||
         ( m_seconds == other.m_seconds && m_thousandths > other.m_thousandths ) )
@@ -50,7 +50,7 @@ bool ElapsedTime::Precision_T::operator > ( Precision_Tag other ) const
     return false;
 }
 
-bool ElapsedTime::Precision_T::operator >= ( Precision_Tag other ) const
+bool ElapsedTime::Precision_T::operator >= ( Precision_T other ) const
 {
     if ( *this == other || *this > other )
     {
@@ -59,7 +59,7 @@ bool ElapsedTime::Precision_T::operator >= ( Precision_Tag other ) const
 
     return false;
 }
-bool ElapsedTime::Precision_T::operator < ( Precision_Tag other ) const
+bool ElapsedTime::Precision_T::operator < ( Precision_T other ) const
 {
     if ( m_seconds < other.m_seconds ||
         ( m_seconds == other.m_seconds && m_thousandths < other.m_thousandths ) )
@@ -69,7 +69,7 @@ bool ElapsedTime::Precision_T::operator < ( Precision_Tag other ) const
 
     return false;
 }
-bool ElapsedTime::Precision_T::operator <= ( Precision_Tag other ) const
+bool ElapsedTime::Precision_T::operator <= ( Precision_T other ) const
 {
     if ( *this == other || *this < other )
     {

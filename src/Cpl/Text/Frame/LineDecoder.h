@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -63,8 +63,8 @@ public:
 		than a tab character, then any tab characters encounter will be
 		converted to the value of 'convertTabs'.
 	 */
-	LineDecoder( Cpl::Io::Input* inputSource=0, char convertTabs = '\t' )
-		:StreamDecoder( m_buffer, BUFSIZE, inputSource )
+	LineDecoder( Cpl::Io::Input* inputSource=0, char convertTabs = '\t', bool blocking = true )
+		:StreamDecoder( m_buffer, BUFSIZE, inputSource, blocking )
 		, m_illegal( false )
 		, m_convertTabs( convertTabs )
 	{

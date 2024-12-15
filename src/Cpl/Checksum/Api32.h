@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -47,7 +47,7 @@ public:
 
 	/** Call the method for every byte being Checksum'd
 	 */
-	virtual void accumulate( void* bytes, unsigned numbytes=1 ) noexcept = 0;
+	virtual void accumulate( const void* bytes, unsigned numbytes=1 ) noexcept = 0;
 
 	/** Call this method to finalize the Checksum.  The calculated Checksum
 		value is returned.  If 'destBuffer' is NOT null, then the

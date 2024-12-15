@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -43,9 +43,9 @@ protected:
 
 public:
 	/** Constructor.  The Output Stream is not required to be specified at
-		construction time (i.e. 'dstPtr' can be zero).  However, the must
-		by a valid Output Stream handle BEFORE the start() method is called.
-		The 'appendNewline' argument when set to true will append a newline
+		construction time (i.e. 'dstPtr' can be zero).  However, the encoder 
+		must have a valid Output Stream handle BEFORE the start() method is called.
+		When 'appendNewline' argument is set to true - encoder will append a newline
 		character to the output stream AFTER the EOF character (this can make
 		for more human readable output stream).
 

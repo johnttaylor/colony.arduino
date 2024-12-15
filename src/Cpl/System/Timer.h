@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -71,6 +71,9 @@ public:
      */
     virtual void stop() noexcept;
 
+    /// Returns the current count (in milliseconds)
+    unsigned long count() const noexcept;
+
 public:
     /** Sets the timing source.  This method CAN ONLY BE CALLED when the
         timer is has never been started or it has been stopped
@@ -84,8 +87,6 @@ protected:  // CounterCallback_ API
     /// See Cpl::System::CounterCallback_
     void increment( unsigned long milliseconds ) noexcept;
 
-    /// See Cpl::System::CounterCallback_
-    unsigned long count() const noexcept;
 };
 
 
@@ -119,10 +120,18 @@ public:
                    TimerExpiredFunction_T expiredCallbackFunc
     );
 
+    /** Alternate Constructor that is used to defer the assignment of the time source.
+        When using this constructor - the Application logic is REQUIRED to use
+        the setTimingSource() method to set the timing source BEFORE the timer
+        is used.
+     */
+    TimerComposer( CONTEXT&               timerContextInstance,
+                   TimerExpiredFunction_T expiredCallbackFunc
+    );
+
 protected:
     /// See Cpl::System::CounterCallback_
     void expired() noexcept;
-
 };
 
 
@@ -144,6 +153,17 @@ TimerComposer<CONTEXT>::TimerComposer
 {
 }
 
+template <class CONTEXT>
+TimerComposer<CONTEXT>::TimerComposer
+(
+    CONTEXT&                context,
+    TimerExpiredFunction_T  expiredCallback
+)
+    : Timer()
+    , m_context( context )
+    , m_expiredFuncPtr( expiredCallback )
+{
+}
 template <class CONTEXT>
 void TimerComposer<CONTEXT>::expired( void ) noexcept
 {

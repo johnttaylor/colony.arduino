@@ -4,7 +4,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -24,17 +24,10 @@ using namespace Cpl::Dm;
 static ModelDatabase    modelDb_( "ignoreThisParameter_usedToInvokeTheStaticConstructor" );
 
 // Allocate my Model Points
-static StaticInfo       info_mp_apple_( "APPLE1" );
-static Mp::Uint32       mp_apple_( modelDb_, info_mp_apple_ );
-
-static StaticInfo       info_mp_orange_( "ORANGE1" );
-static Mp::Uint32       mp_orange_( modelDb_, info_mp_orange_ );
-
-static StaticInfo       info_mp_cherry_( "CHERRY1" );
-static Mp::Uint32       mp_cherry_( modelDb_, info_mp_cherry_ );
-
-static StaticInfo       info_mp_plum_( "PLUM1" );
-static Mp::Uint32       mp_plum_( modelDb_, info_mp_plum_ );
+static Mp::Uint32       mp_apple_( modelDb_, "APPLE1" );
+static Mp::Uint32       mp_orange_( modelDb_, "ORANGE1"  );
+static Mp::Uint32       mp_cherry_( modelDb_, "CHERRY1" );
+static Mp::Uint32       mp_plum_( modelDb_, "PLUM1" );
 
 class EventFlagProcessing : public EventLoop
 {
@@ -74,7 +67,7 @@ public:
     }
 
     /// Type safe change notification.  See Cpl::Dm::SubscriberApi
-    void modelPointChanged( Mp::Uint32& modelPointThatChanged ) noexcept
+    void modelPointChanged( Mp::Uint32& modelPointThatChanged, Cpl::Dm::SubscriberApi& clientObserver ) noexcept
     {
         m_count++;
 

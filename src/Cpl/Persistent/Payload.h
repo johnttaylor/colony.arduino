@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -30,8 +30,13 @@ class Payload
 public:
     /** This method returns a Record's data payload contents.  The Record
         is responsible for NOT over-running the 'dst' buffer.  The method
-        returns the number of bytes copied to 'dst'.  
+        returns the number of bytes copied to 'dst' on success; else zero is
+        returned when there is failure.
         
+        Note: On success, the returned number of bytes MUST be the same on every
+              call of this method, i.e. variable length records at run time is
+              NOT supported.
+
         Note: If the Record returns less data than 'maxDstLen' - the remaining
               bytes will be zero filled before the record data is written to
               the media.

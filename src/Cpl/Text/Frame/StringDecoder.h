@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -85,7 +85,8 @@ public:
 
 	/** This method return a pointer to the next character AFTER the LAST character
 		decoded.  The value returned from this method is ONLY valid after a
-		call to scan() and BEFORE a subsequent call to scan() or setInput().
+		call to scan() and BEFORE a subsequent call to scan(), oobRead(), or 
+		setInput().
 	 */
 	virtual const char* getRemainder() const noexcept;
 

@@ -4,7 +4,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at           
 * http://integerfox.com/colony.core/license.txt
 *                                                                               
-* Copyright (c) 2014-2020  John T. Taylor                                        
+* Copyright (c) 2014-2022  John T. Taylor                                        
 *                                                                               
 * Redistributions of the source code must retain the above copyright notice.    
 *----------------------------------------------------------------------------*/ 
@@ -22,9 +22,9 @@ TEST_CASE( "timer", "[timer]" )
     Cpl::System::Shutdown_TS::clearAndUseCounter();
 
     // Create my test sequencers
-    Master  fruits( SLOW_TICKSRC_MS_PER_TICK, DELAY_, "apple", APPLE_T1, APPLE_T2, "orange", ORANGE_T1, ORANGE_T2, Cpl::System::Thread::getCurrent() );
-    Master  flowers( FAST_TICKSRC_MS_PER_TICK, DELAY_, "rose", ROSE_T1, ROSE_T2, "daisy", DAISY_T1, DAISY_T2, Cpl::System::Thread::getCurrent() );
-    Master  trees( FAST_TICKSRC_MS_PER_TICK, DELAY_, "oak", OAK_T1, OAK_T2, "pine", PINE_T1, PINE_T2, Cpl::System::Thread::getCurrent() );
+    MasterT  fruits( SLOW_TICKSRC_MS_PER_TICK, DELAY_, "apple", APPLE_T1, APPLE_T2, "orange", ORANGE_T1, ORANGE_T2, Cpl::System::Thread::getCurrent() );
+    MasterT  flowers( FAST_TICKSRC_MS_PER_TICK, DELAY_, "rose", ROSE_T1, ROSE_T2, "daisy", DAISY_T1, DAISY_T2, Cpl::System::Thread::getCurrent() );
+    MasterT  trees( FAST_TICKSRC_MS_PER_TICK, DELAY_, "oak", OAK_T1, OAK_T2, "pine", PINE_T1, PINE_T2, Cpl::System::Thread::getCurrent() );
 
     // Create all of the threads
     Cpl::System::Thread* t1  = Cpl::System::Thread::create( fruits,     "FRUITS" );

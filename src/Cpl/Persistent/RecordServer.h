@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -33,7 +33,9 @@ public:
         NOTE: 'recordList' is variable length array where the last entry in the
               array MUST BE a nullptr. 
      */
-    RecordServer( Record* recordList[], unsigned long timingTickInMsec = OPTION_CPL_SYSTEM_EVENT_LOOP_TIMEOUT_PERIOD ) noexcept;
+    RecordServer( Record*                             recordList[], 
+                  unsigned long                       timingTickInMsec = OPTION_CPL_SYSTEM_EVENT_LOOP_TIMEOUT_PERIOD,
+                  Cpl::System::SharedEventHandlerApi* eventHandler     = 0 ) noexcept;
 
 public:
     /// This method starts the server (See Cpl::Itc::OpenSync)

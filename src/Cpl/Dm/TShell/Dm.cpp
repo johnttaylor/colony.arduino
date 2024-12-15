@@ -4,7 +4,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -21,8 +21,11 @@ using namespace Cpl::Dm::TShell;
 
 
 ///////////////////////////
-Dm::Dm( Cpl::Container::Map<Cpl::TShell::Command>& commandList, Cpl::Dm::ModelDatabaseApi& modelDatabase, const char* cmdNameAndDatabaseNumber ) noexcept
-	: Cpl::TShell::Cmd::Command( commandList, cmdNameAndDatabaseNumber )
+Dm::Dm( Cpl::Container::Map<Cpl::TShell::Command>&  commandList,
+		Cpl::Dm::ModelDatabaseApi&                  modelDatabase,
+		const char*                                 cmdNameAndDatabaseNumber,
+		Cpl::TShell::Security::Permission_T         minPermLevel ) noexcept
+	: Cpl::TShell::Cmd::Command( commandList, cmdNameAndDatabaseNumber, minPermLevel )
 	, m_database( modelDatabase )
 {
 }
@@ -100,7 +103,7 @@ Cpl::TShell::Command::Result_T Dm::execute( Cpl::TShell::Context_& context, char
 		int					outlen;
 		Cpl::Text::String&	outtext    = context.getOutputBuffer();
 		char*				outptr     = outtext.getBuffer( outlen );
-		if ( point->toJSON( outptr, outlen, truncated ) == false )
+		if ( point->toJSON( outptr, outlen, truncated, true, true ) == false )
 		{
 			return Command::eERROR_FAILED;
 		}

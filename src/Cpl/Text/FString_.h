@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -81,7 +81,54 @@ public:
 	/// see Cpl::Text::String
 	int maxLength() const;
 
+public:
+	/// Make parent method visible
+	using Cpl::Text::String::operator=;
 
+	///@{
+	/// Assignment
+	Cpl::Text::String& operator=( int num );
+
+	/// Assignment
+	Cpl::Text::String& operator=( unsigned int num );
+
+	/// Assignment
+	Cpl::Text::String& operator=( long num );
+
+	/// Assignment
+	Cpl::Text::String& operator=( long long num );
+
+	/// Assignment
+	Cpl::Text::String& operator=( unsigned long num );
+
+	/// Assignment
+	Cpl::Text::String& operator=( unsigned long long num );
+	///@}
+
+public:
+	/// Make parent method visible
+	using Cpl::Text::String::operator+=;
+
+	///@{
+
+	/// Append
+	Cpl::Text::String& operator +=( int num );
+
+	/// Append
+	Cpl::Text::String& operator +=( unsigned int num );
+
+	/// Append
+	Cpl::Text::String& operator +=( long num );
+
+	/// Append
+	Cpl::Text::String& operator +=( long long num );
+
+	/// Append
+	Cpl::Text::String& operator +=( unsigned long num );
+
+	/// Append
+	Cpl::Text::String& operator +=( unsigned long long num );
+	///@}
 };
 
 

@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -100,10 +100,7 @@ public:
             CPL_SYSTEM_TRACE_MSG( SECT_, ("----- End Sequence#: %d.", i + 1) );
 
             // Handshake with the supervising thread to validate sequence results
-            if ( !m_simulation )
-            {
-                m_waiter.signal(); // I don't have to wake up the test harness when using sim ticks
-            }
+            m_waiter.signal();
             Cpl::System::Thread::wait();
         }
 

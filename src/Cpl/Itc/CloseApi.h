@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@ public:
     /** Synchronously closes/cleans-up the called object. The method returns
         if the close operation was successful.
      */
-    virtual bool close( void ) = 0;
+    virtual bool close( void* args = nullptr ) = 0;
 
 
 public:

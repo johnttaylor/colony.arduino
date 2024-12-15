@@ -6,14 +6,14 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 /** @file */
 
 
-#include "Cpl/Dm/Mp/Basic.h"
+#include "Cpl/Dm/ModelPointCommon_.h"
 
 ///
 namespace Cpl {
@@ -29,65 +29,79 @@ namespace Mp {
  	The toJSON()/fromJSON format is:
 	\code
 	
-	{ name:"<mpname>", type:"<mptypestring>", invalid:nn, seqnum:nnnn, locked:true|false, val:true|false }
+	{ name:"<mpname>", type:"<mptypestring>", valid:true|false, seqnum:nnnn, locked:true|false, val:true|false }
 	
 	\endcode
 	
 	NOTE: All methods in this class ARE thread Safe unless explicitly
           documented otherwise.
  */
-class Bool : public Basic<bool>
+class Bool : public ModelPointCommon_
 {
 public:
     /// Constructor. Invalid MP. 
-    Bool( Cpl::Dm::ModelDatabase& myModelBase, StaticInfo& staticInfo );
+    Bool( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
+        :Cpl::Dm::ModelPointCommon_( myModelBase, symbolicName, &m_data, sizeof( m_data ), false )
+    {
+    }
 
     /// Constructor. Valid MP.  Requires an initial value
-    Bool( Cpl::Dm::ModelDatabase& myModelBase, StaticInfo& staticInfo, bool initialValue );
+    Bool( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName, bool initialValue )
+        :Cpl::Dm::ModelPointCommon_( myModelBase, symbolicName, &m_data, sizeof( m_data ), true )
+    {
+        m_data = initialValue;
+    }
 
 public:
     /// Type safe read. See Cpl::Dm::ModelPoint
-    virtual int8_t read( bool& dstData, uint16_t* seqNumPtr=0 ) const noexcept;
+    inline bool read( bool& dstData, uint16_t* seqNumPtr=0 ) const noexcept
+    {
+        return readData( &dstData, sizeof( m_data ), seqNumPtr );
+    }
 
     /// Type safe write. See Cpl::Dm::ModelPoint
-    virtual uint16_t write( bool newValue, LockRequest_T lockRequest = eNO_REQUEST ) noexcept;
+    inline uint16_t write( bool newValue, LockRequest_T lockRequest = eNO_REQUEST ) noexcept
+    {
+        return writeData( &newValue, sizeof( m_data ), lockRequest );
+    }
 
-    /// Type safe read-modify-write client callback interface
-    typedef Cpl::Dm::ModelPointRmwCallback<bool> Client;
+    /// Updates the MP with the valid-state/data from 'src'. Note: the src.lock state is NOT copied
+    inline uint16_t copyFrom( const Bool& src, LockRequest_T lockRequest = eNO_REQUEST ) noexcept
+    {
+        return copyDataAndStateFrom( src, lockRequest );
+    }
 
-    /** Type safe read-modify-write. See Cpl::Dm::ModelPoint
-
-       NOTE: THE USE OF THIS METHOD IS STRONGLY DISCOURAGED because it has
-             potential to lockout access to the ENTIRE Model Base for an
-             indeterminate amount of time.  And alternative is to have the
-             concrete Model Point leaf classes provide the application
-             specific read, write, read-modify-write methods in addition or in
-             lieu of the read/write methods in this interface.
-     */
-    virtual uint16_t readModifyWrite( Client& callbackClient, LockRequest_T lockRequest = eNO_REQUEST );
-
+    ///  See Cpl::Dm::ModelPoint.
+    const char* getTypeAsText() const noexcept;
 
 public:
     /// Type safe subscriber
     typedef Cpl::Dm::Subscriber<Bool> Observer;
 
     /// Type safe register observer
-    virtual void attach( Observer& observer, uint16_t initialSeqNumber=SEQUENCE_NUMBER_UNKNOWN ) noexcept;
+    void attach( Observer& observer, uint16_t initialSeqNumber=SEQUENCE_NUMBER_UNKNOWN ) noexcept;
 
     /// Type safe un-register observer
-    virtual void detach( Observer& observer ) noexcept;
+    void detach( Observer& observer ) noexcept;
 
-public:
-	/// See Cpl::Dm::Point.  
-	bool toJSON( char* dst, size_t dstSize, bool& truncated, bool verbose=true ) noexcept;
-
-public:
     /// See Cpl::Dm::Point.  
     bool fromJSON_( JsonVariant& src, LockRequest_T lockRequest, uint16_t& retSequenceNumber, Cpl::Text::String* errorMsg ) noexcept;
 
-    ///  See Cpl::Dm::ModelPoint.
-    const char* getTypeAsText() const noexcept;
+    /// See Cpl::Dm::ModelPointCommon
+    inline bool readAndSync( bool& dstData, SubscriberApi& observerToSync )
+    {
+        return ModelPointCommon_::readAndSync( &dstData, sizeof( m_data ), observerToSync );
+    }
 
+
+protected:
+    /// See Cpl::Dm::Point.  
+    void setJSONVal( JsonDocument& doc ) noexcept;
+
+
+protected:
+    /// My data
+    bool m_data;
 };
 
 

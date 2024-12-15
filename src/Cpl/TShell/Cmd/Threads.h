@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -16,23 +16,6 @@
 #include "Cpl/TShell/Cmd/Command.h"
 #include "Cpl/Text/String.h"
 #include "Cpl/System/Thread.h"
-
-
-
-/** Command
-										"         1         2         3         4         5         6         7         8"
-										"12345678901234567890123456789012345678901234567890123456789012345678901234567890"
-*/
-#define CPLTSHELLCMD_CMD_THREADS_	    "threads"
-/// Usage
-#define CPLTSHELLCMD_USAGE_THREADS_     "threads"
-
-/// Detailed Help text
-#ifndef CPLTSHELLCMD_DETAIL_THREADS_
-#define CPLTSHELLCMD_DETAIL_THREADS_    "  Displays the list of threads."
-
-
-#endif // ifndef allows detailed help to be compacted down to a single character if FLASH/code space is an issue
 
 
 
@@ -50,11 +33,24 @@ namespace Cmd {
 class Threads : public Command, public Cpl::System::Thread::Traverser
 {
 public:
+	/// The command verb/identifier
+	static constexpr const char* verb = "threads";
+
+	/// The command usage string
+	static constexpr const char* usage = "threads";
+
+	/** The command detailed help string (recommended that lines do not exceed 80 chars)
+														  1         2         3         4         5         6         7         8
+												 12345678901234567890123456789012345678901234567890123456789012345678901234567890
+	 */
+	static constexpr const char* detailedHelp = "  Displays the list of threads.";
+
+public:
 	/// See Cpl::TShell::Command
-	const char* getUsage() const noexcept { return CPLTSHELLCMD_USAGE_THREADS_; }
+	const char* getUsage() const noexcept { return usage; }
 
 	/// See Cpl::TShell::Command
-	const char* getHelp() const noexcept { return CPLTSHELLCMD_DETAIL_THREADS_; }
+	const char* getHelp() const noexcept { return detailedHelp; }
 
 
 protected:
@@ -70,7 +66,8 @@ protected:
 
 public:
 	/// Constructor
-	Threads( Cpl::Container::Map<Cpl::TShell::Command>& commandList ) noexcept;
+	Threads( Cpl::Container::Map<Cpl::TShell::Command>& commandList,
+			 Security::Permission_T                     minPermLevel=OPTION_TSHELL_CMD_COMMAND_DEFAULT_PERMISSION_LEVEL ) noexcept;
 
 public:
 	/// See Cpl::TShell::Command

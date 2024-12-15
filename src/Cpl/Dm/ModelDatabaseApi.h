@@ -6,7 +6,7 @@
 * agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
 *
-* Copyright (c) 2014-2020  John T. Taylor
+* Copyright (c) 2014-2022  John T. Taylor
 *
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
@@ -89,9 +89,8 @@ public:
         \code
 
         { name="<mpname>", locked:true|false }              // Locks/unlocks the MP
-        { name="<mpname>", invalid=1 }                      // Invalidates the MP
-        { name="<mpname>", invalid=22 }                     // Invalidates the MP with a non-default invalid state/value
-        { name="<mpname>", invalid=1, locked=true }         // Invalidates the MP and locks the MP
+        { name="<mpname>", valid:false }                    // Invalidates the MP
+        { name="<mpname>", valid:false, locked=true }       // Invalidates the MP and locks the MP
         { name="<mpname>", val:<value> }                    // Writes a new (valid) value to the MP
         { name="<mpname>", val:<value>, locked=true }       // Writes a new (valid) value to the MP and locks the MP
 
