@@ -3,7 +3,6 @@ IF "/%1"=="/name" ECHO:GCC-ARM compiler for Grand Central BSP 1.6.0 & exit /b 0
 
 :: Core Arduino tools
 set ARDUINO_BSP_VER=1.6.0
-set ARDUINO_TOOLS_ROOT=%NQBP_PKG_ROOT%arduino\tools
 
 :: Segger support
 set PATH=%PATH%;c:\Program Files (x86)\SEGGER\JLink

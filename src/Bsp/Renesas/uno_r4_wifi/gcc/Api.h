@@ -27,9 +27,10 @@
 
 
 #include "colony_config.h"
-#include "HardwareSerial.h"
-#include "variant.h"
-#include "pins_arduino.h"
+#include "Arduino.h"
+//#include "pinmux.inc"
+//#include "HardwareSerial.h"
+//#include "pins_arduino.h"
 #include <stdint.h>
 
 //////////////////////////////////////////////////////////
@@ -53,51 +54,51 @@ void Bsp_beginFileSystem();
     extern Cpl::Io::InputOutput& Bsp_Serial(void);
 */
 
-/* Serial Object's Frame Configuration Options.  Note: These
-   values are copied from HardwareSerial.h header file because
-   including the HardwareSerial.h file directly breaks all sorts
-   of things (i.e. the Arduino stuff is not namespace protected)
-*/
-#define HARDSER_PARITY_EVEN   ( 0x1ul )
-#define HARDSER_PARITY_ODD    ( 0x2ul )
-#define HARDSER_PARITY_NONE   ( 0x3ul )
-#define HARDSER_PARITY_MASK   ( 0xFul )
+// /* Serial Object's Frame Configuration Options.  Note: These
+//    values are copied from HardwareSerial.h header file because
+//    including the HardwareSerial.h file directly breaks all sorts
+//    of things (i.e. the Arduino stuff is not namespace protected)
+// */
+// #define HARDSER_PARITY_EVEN   ( 0x1ul )
+// #define HARDSER_PARITY_ODD    ( 0x2ul )
+// #define HARDSER_PARITY_NONE   ( 0x3ul )
+// #define HARDSER_PARITY_MASK   ( 0xFul )
 
-#define HARDSER_STOP_BIT_1    ( 0x10ul )
-#define HARDSER_STOP_BIT_1_5  ( 0x20ul )
-#define HARDSER_STOP_BIT_2    ( 0x30ul )
-#define HARDSER_STOP_BIT_MASK ( 0xF0ul )
+// #define HARDSER_STOP_BIT_1    ( 0x10ul )
+// #define HARDSER_STOP_BIT_1_5  ( 0x20ul )
+// #define HARDSER_STOP_BIT_2    ( 0x30ul )
+// #define HARDSER_STOP_BIT_MASK ( 0xF0ul )
 
-#define HARDSER_DATA_5        ( 0x100ul )
-#define HARDSER_DATA_6        ( 0x200ul )
-#define HARDSER_DATA_7        ( 0x300ul )
-#define HARDSER_DATA_8        ( 0x400ul )
-#define HARDSER_DATA_MASK     ( 0xF00ul )
+// #define HARDSER_DATA_5        ( 0x100ul )
+// #define HARDSER_DATA_6        ( 0x200ul )
+// #define HARDSER_DATA_7        ( 0x300ul )
+// #define HARDSER_DATA_8        ( 0x400ul )
+// #define HARDSER_DATA_MASK     ( 0xF00ul )
 
-#define SERIAL_5N1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_NONE | HARDSER_DATA_5 )
-#define SERIAL_6N1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_NONE | HARDSER_DATA_6 )
-#define SERIAL_7N1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_NONE | HARDSER_DATA_7 )
-#define SERIAL_8N1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_NONE | HARDSER_DATA_8 )
-#define SERIAL_5N2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_NONE | HARDSER_DATA_5 )
-#define SERIAL_6N2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_NONE | HARDSER_DATA_6 )
-#define SERIAL_7N2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_NONE | HARDSER_DATA_7 )
-#define SERIAL_8N2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_NONE | HARDSER_DATA_8 )
-#define SERIAL_5E1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_EVEN | HARDSER_DATA_5 )
-#define SERIAL_6E1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_EVEN | HARDSER_DATA_6 )
-#define SERIAL_7E1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_EVEN | HARDSER_DATA_7 )
-#define SERIAL_8E1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_EVEN | HARDSER_DATA_8 )
-#define SERIAL_5E2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_EVEN | HARDSER_DATA_5 )
-#define SERIAL_6E2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_EVEN | HARDSER_DATA_6 )
-#define SERIAL_7E2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_EVEN | HARDSER_DATA_7 )
-#define SERIAL_8E2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_EVEN | HARDSER_DATA_8 )
-#define SERIAL_5O1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_ODD | HARDSER_DATA_5 )
-#define SERIAL_6O1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_ODD | HARDSER_DATA_6 )
-#define SERIAL_7O1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_ODD | HARDSER_DATA_7 )
-#define SERIAL_8O1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_ODD | HARDSER_DATA_8 )
-#define SERIAL_5O2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_ODD | HARDSER_DATA_5 )
-#define SERIAL_6O2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_ODD | HARDSER_DATA_6 )
-#define SERIAL_7O2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_ODD | HARDSER_DATA_7 )
-#define SERIAL_8O2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_ODD | HARDSER_DATA_8 )
+// #define SERIAL_5N1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_NONE | HARDSER_DATA_5 )
+// #define SERIAL_6N1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_NONE | HARDSER_DATA_6 )
+// #define SERIAL_7N1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_NONE | HARDSER_DATA_7 )
+// #define SERIAL_8N1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_NONE | HARDSER_DATA_8 )
+// #define SERIAL_5N2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_NONE | HARDSER_DATA_5 )
+// #define SERIAL_6N2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_NONE | HARDSER_DATA_6 )
+// #define SERIAL_7N2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_NONE | HARDSER_DATA_7 )
+// #define SERIAL_8N2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_NONE | HARDSER_DATA_8 )
+// #define SERIAL_5E1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_EVEN | HARDSER_DATA_5 )
+// #define SERIAL_6E1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_EVEN | HARDSER_DATA_6 )
+// #define SERIAL_7E1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_EVEN | HARDSER_DATA_7 )
+// #define SERIAL_8E1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_EVEN | HARDSER_DATA_8 )
+// #define SERIAL_5E2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_EVEN | HARDSER_DATA_5 )
+// #define SERIAL_6E2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_EVEN | HARDSER_DATA_6 )
+// #define SERIAL_7E2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_EVEN | HARDSER_DATA_7 )
+// #define SERIAL_8E2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_EVEN | HARDSER_DATA_8 )
+// #define SERIAL_5O1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_ODD | HARDSER_DATA_5 )
+// #define SERIAL_6O1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_ODD | HARDSER_DATA_6 )
+// #define SERIAL_7O1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_ODD | HARDSER_DATA_7 )
+// #define SERIAL_8O1            ( HARDSER_STOP_BIT_1 | HARDSER_PARITY_ODD | HARDSER_DATA_8 )
+// #define SERIAL_5O2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_ODD | HARDSER_DATA_5 )
+// #define SERIAL_6O2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_ODD | HARDSER_DATA_6 )
+// #define SERIAL_7O2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_ODD | HARDSER_DATA_7 )
+// #define SERIAL_8O2            ( HARDSER_STOP_BIT_2 | HARDSER_PARITY_ODD | HARDSER_DATA_8 )
 
 
 //////////////////////////////////////////////////////////

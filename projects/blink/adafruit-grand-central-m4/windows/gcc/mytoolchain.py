@@ -28,14 +28,8 @@ from nqbplib.base import BuildValues
 from nqbplib.my_globals import NQBP_WORK_ROOT
 from nqbplib.my_globals import NQBP_PKG_ROOT
 
-# Get the location of the compiler toolchain
+# Get which Adafruit/Arduino BSP version to use
 env_error = None
-ARDUINO_TOOLS = os.environ.get( 'ARDUINO_TOOLS' )
-if ( ARDUINO_TOOLS == None ):
-    ARDUINO_TOOLS = env_error = "ARDUINO_TOOLS"
-ARDUINO_COMPILER_VER = os.environ.get( 'ARDUINO_COMPILER_VER' )
-if ( ARDUINO_COMPILER_VER == None ):
-    ARDUINO_COMPILER_VER = env_error = "ARDUINO_COMPILER_VER"
 ARDUINO_BSP_VER = os.environ.get( 'ARDUINO_BSP_VER' )
 if ( ARDUINO_BSP_VER == None ):
     ARDUINO_BSP_VER = env_error = "ARDUINO_BSP_VER"
@@ -112,10 +106,10 @@ prjdir = os.path.dirname(os.path.abspath(__file__))
 
 
 # Select Module that contains the desired toolchain
-from nqbplib.toolchains.windows.arm_m4_arduino.atsamd51_grandcentral import ToolChain
+from nqbplib.toolchains.windows.arm_m4_arduino.atsamd51_grandcentral_gcc_in_path import ToolChain
 
 
 # Function that instantiates an instance of the toolchain
 def create():
-    tc = ToolChain( FINAL_OUTPUT_NAME, prjdir, build_variants, ARDUINO_TOOLS, ARDUINO_SUPPORT, ARDUINO_COMPILER_VER, ARDUINO_BSP_VER, "arduino", env_error )
+    tc = ToolChain( FINAL_OUTPUT_NAME, prjdir, build_variants, ARDUINO_SUPPORT, ARDUINO_BSP_VER, default_variant="arduino", env_error=env_error )
     return tc 

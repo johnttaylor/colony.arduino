@@ -1,9 +1,9 @@
 echo off
-IF "/%1"=="/name" ECHO:GCC-ARM compiler for Grand Central BSP 1.6.0 & exit /b 0
+IF "/%1"=="/name" ECHO:GCC-ARM compiler UNO R4 WIFI BSP 1.2.2 & exit /b 0
 
 :: Core Arduino tools
 set ARDUINO_BSP_VER=1.2.2
-set ARDUINO_TOOLS_ROOT=%NQBP_PKG_ROOT%arduino\tools
+set ARDUINO_ROOT=%NQBP_PKG_ROOT%arduino\
 
 :: Segger support
 set PATH=%PATH%;c:\Program Files (x86)\SEGGER\JLink
