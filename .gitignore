@@ -39,3 +39,4 @@ make.log
 *.pdb
 *.lst
 *.jdebug.user
+compile_flags.txt
