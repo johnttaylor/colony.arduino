@@ -28,14 +28,8 @@ from nqbplib.base import BuildValues
 from nqbplib.my_globals import NQBP_WORK_ROOT
 from nqbplib.my_globals import NQBP_PKG_ROOT
 
-# Get the location of the compiler toolchain
+# Get which Adafruit/Arduino BSP version to use
 env_error = None
-ARDUINO_TOOLS = os.environ.get( 'ARDUINO_TOOLS' )
-if ( ARDUINO_TOOLS == None ):
-    ARDUINO_TOOLS = env_error = "ARDUINO_TOOLS"
-ARDUINO_COMPILER_VER = os.environ.get( 'ARDUINO_COMPILER_VER' )
-if ( ARDUINO_COMPILER_VER == None ):
-    ARDUINO_COMPILER_VER = env_error = "ARDUINO_COMPILER_VER"
 ARDUINO_BSP_VER = os.environ.get( 'ARDUINO_BSP_VER' )
 if ( ARDUINO_BSP_VER == None ):
     ARDUINO_BSP_VER = env_error = "ARDUINO_BSP_VER"
@@ -50,7 +44,7 @@ ARDUINO_SUPPORT = NQBP_PKG_ROOT()
 FINAL_OUTPUT_NAME = 'a'
 
 # BSP directory that contains the vector table 
-#bsp_objects = '_BUILT_DIR_.xpkgs/arduino/src/Bsp/Adafruit/grand_central_m4/gcc'
+bsp_objects = '_BUILT_DIR_.src/Bsp/Adafruit/grand_central_m4/gcc'
 
 #
 # For build config/variant: "Release"
@@ -66,7 +60,7 @@ base_release.inc         += r' -I{}\arduino\libraries\SdFat\src'.format( ARDUINO
 base_release.inc         += r' -I{}\arduino\libraries\Adafruit_SPIFlash\src'.format( ARDUINO_SUPPORT )
 base_release.inc         += r' -I{}\arduino\libraries\Adafruit_Zero_DMA_Library'.format( ARDUINO_SUPPORT )
 base_release.linkflags    = r'-Tflash_without_bootloader.ld'
-#base_release.firstobjs    = bsp_objects;
+base_release.firstobjs    = bsp_objects;
 
 # Set project specific 'optimized' options
 optimzed_release = BuildValues()    # Do NOT comment out this line
@@ -115,10 +109,10 @@ prjdir = os.path.dirname(os.path.abspath(__file__))
 
 
 # Select Module that contains the desired toolchain
-from nqbplib.toolchains.windows.arm_m4_arduino.atsamd51_grandcentral import ToolChain
+from nqbplib.toolchains.windows.arm_m4_arduino.atsamd51_grandcentral_gcc_in_path import ToolChain
 
 
 # Function that instantiates an instance of the toolchain
 def create():
-    tc = ToolChain( FINAL_OUTPUT_NAME, prjdir, build_variants, ARDUINO_TOOLS, ARDUINO_SUPPORT, ARDUINO_COMPILER_VER, ARDUINO_BSP_VER, "arduino", env_error )
+    tc = ToolChain( FINAL_OUTPUT_NAME, prjdir, build_variants, ARDUINO_SUPPORT, ARDUINO_BSP_VER, default_variant="arduino", env_error=env_error )
     return tc 

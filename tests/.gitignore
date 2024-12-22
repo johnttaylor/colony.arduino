@@ -1,5 +1,6 @@
 # Misc
 *.gcov
+_arduino/
 _posix64/
 _posix/
 _cpp11/
