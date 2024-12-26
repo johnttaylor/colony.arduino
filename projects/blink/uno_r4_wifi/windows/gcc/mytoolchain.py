@@ -44,7 +44,7 @@ ARDUINO_ROOT = NQBP_PKG_ROOT()
 FINAL_OUTPUT_NAME = 'blink'
 
 # BSP directory that contains the vector table 
-#bsp_objects = '_BUILT_DIR_.src/Bsp/Adafruit/grand_central_m4/gcc'
+bsp_objects = '_BUILT_DIR_.src/Bsp/Renesas/uno_r4_wifi/gcc'
 
 #
 # For build config/variant: "Release"
@@ -53,12 +53,12 @@ FINAL_OUTPUT_NAME = 'blink'
 # Set project specific 'base' (i.e always used) options
 base_release = BuildValues()        # Do NOT comment out this line
 #base_release.cflags       = ' -DUSING_FREERTOS -Wall -DF_CPU=120000000L -DARDUINO=10810 -DVARIANT_QSPI_BAUD_DEFAULT=50000000 -DENABLE_CACHE '
-base_release.cflags       = ' -Wall'
+base_release.cflags       = ' -DF_CPU=48000000 -DNO_USB -DARDUINO=10607'
 #base_release.inc         += r' -I{}\src\Bsp\Renesas\uno_r4_wifi\gcc\FreeRTOS\Source\Include'.format( NQBP_PKG_ROOT() )
 #base_release.inc         += r' -I{}\src\Bsp\Renesas\uno_r4_wifi\gcc\FreeRTOS\Source\portable\GCC\ARM_CM4F'.format( NQBP_PKG_ROOT() )
 
 base_release.linkflags    = '-Tfsp.ld'
-#base_release.firstobjs    = bsp_objects;
+base_release.firstobjs    = bsp_objects;
 
 # Set project specific 'optimized' options
 optimzed_release = BuildValues()    # Do NOT comment out this line

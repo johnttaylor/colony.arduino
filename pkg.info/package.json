@@ -38,23 +38,6 @@
         }
       },
       {
-        "pkgname": "stm32-gcc-arm",
-        "pkgtype": "readonly",
-        "virtualAdoption": false,
-        "adoptedDate": "Sun Nov 10 22:40:26 2024",
-        "parentDir": "xsrc",
-        "version": {
-          "semanticVersion": null,
-          "branch": null,
-          "tag": "OUTCAST2-main-10.3-2021.10"
-        },
-        "repo": {
-          "name": "stm32-gcc-arm",
-          "type": "git",
-          "origin": "https://github.com/johnttaylor"
-        }
-      },
-      {
         "pkgname": "nqbp2",
         "pkgtype": "readonly",
         "virtualAdoption": false,
@@ -67,23 +50,6 @@
         },
         "repo": {
           "name": "nqbp2",
-          "type": "git",
-          "origin": "https://github.com/johnttaylor"
-        }
-      },
-      {
-        "pkgname": "stm32-gcc-arm",
-        "pkgtype": "readonly",
-        "virtualAdoption": false,
-        "adoptedDate": "Sun Dec 22 16:00:58 2024",
-        "parentDir": "xsrc",
-        "version": {
-          "semanticVersion": null,
-          "branch": null,
-          "tag": "OUTCAST2-main-10.3-2021.10"
-        },
-        "repo": {
-          "name": "stm32-gcc-arm",
           "type": "git",
           "origin": "https://github.com/johnttaylor"
         }
