@@ -3,22 +3,6 @@
     "strong": [],
     "weak": [
       {
-        "pkgname": "catch",
-        "pkgtype": "overlay",
-        "adoptedDate": "Sun May 29 16:57:56 2022",
-        "parentDir": null,
-        "version": {
-          "semanticVersion": "2.13.7b",
-          "branch": null,
-          "tag": "OUTCAST2-main-2.13.7b"
-        },
-        "repo": {
-          "name": "catch",
-          "type": "git",
-          "origin": "https://github.com/johnttaylor"
-        }
-      },
-      {
         "pkgname": "stm32F4-sdk",
         "pkgtype": "readonly",
         "virtualAdoption": false,
@@ -87,18 +71,86 @@
         }
       },
       {
+        "pkgname": "ratt",
+        "pkgtype": "readonly",
+        "virtualAdoption": false,
+        "adoptedDate": "Fri Jun  7 00:01:58 2024",
+        "parentDir": "xsrc",
+        "version": {
+          "semanticVersion": "2.0.1",
+          "branch": null,
+          "tag": "OUTCAST2-main-2.0.1"
+        },
+        "repo": {
+          "name": "ratt",
+          "type": "git",
+          "origin": "https://github.com/johnttaylor"
+        }
+      },
+      {
+        "pkgname": "littlefs",
+        "pkgtype": "readonly",
+        "virtualAdoption": false,
+        "adoptedDate": "Tue Dec 17 15:47:42 2024",
+        "parentDir": "xsrc",
+        "version": {
+          "semanticVersion": null,
+          "branch": null,
+          "tag": "v2.10.0"
+        },
+        "repo": {
+          "name": "littlefs",
+          "type": "git",
+          "origin": "https://github.com/littlefs-project"
+        }
+      },
+      {
+        "pkgname": "catch2",
+        "pkgtype": "readonly",
+        "virtualAdoption": false,
+        "adoptedDate": "Fri Dec 27 22:34:51 2024",
+        "parentDir": "xsrc",
+        "version": {
+          "semanticVersion": null,
+          "branch": null,
+          "tag": "v3.7.1"
+        },
+        "repo": {
+          "name": "catch2",
+          "type": "git",
+          "origin": "https://github.com/catchorg"
+        }
+      },
+      {
         "pkgname": "nqbp2",
         "pkgtype": "readonly",
         "virtualAdoption": false,
-        "adoptedDate": "Mon Apr 24 22:50:30 2023",
+        "adoptedDate": "Sun Dec 29 17:43:31 2024",
         "parentDir": "xsrc",
         "version": {
-          "semanticVersion": "0.1.3",
+          "semanticVersion": "1.0.0",
           "branch": null,
-          "tag": "OUTCAST2-main-0.1.3"
+          "tag": "OUTCAST2-main-1.0.0"
         },
         "repo": {
           "name": "nqbp2",
+          "type": "git",
+          "origin": "https://github.com/johnttaylor"
+        }
+      },
+      {
+        "pkgname": "catch",
+        "pkgtype": "overlay",
+        "virtualAdoption": false,
+        "adoptedDate": "Sun Dec 29 20:35:47 2024",
+        "parentDir": null,
+        "version": {
+          "semanticVersion": "3.0.0",
+          "branch": null,
+          "tag": "OUTCAST2-main-3.0.0"
+        },
+        "repo": {
+          "name": "catch",
           "type": "git",
           "origin": "https://github.com/johnttaylor"
         }
@@ -107,6 +159,8 @@
   },
   "directories": {
     "primary": [
+      "projects",
+      "scripts",
       "src",
       "tests",
       "top"
@@ -129,13 +183,55 @@
   },
   "publish": {
     "current": {
-      "comment": "Migrate to STM32 as the default target platform",
-      "version": "4.4.0",
-      "date": "Thu Apr 27 00:10:33 2023",
-      "timestamp": 1682554233,
-      "changes": "\"- Updated to newer version of NQBP2 for STM32 toolchains\\n- Added STM32F413ZH as the 'default' target platform\\n- Added stream IO/driver for the STM32F MCU (works with/for other STM32x MCUs)\\n- Adopted the gcc toolchain for STM32 MCUs\\n- Adopted stm32 SDKs for the F4 and F7 families of MCU\\n- Deprecated the RX62N platform\\n- Move the BSP Package into the colony core (i.e. the BSP package has been deprecated)\\n- Added the 'Micro Application' framework (Cpl::MApp)\\n- Updated the freertos package to 10.4.3-LTS-Patch-1 (and added support for Seggers' SystemView)\""
+      "comment": "Migrate to Catch2 v3.x test framework (now uses a static library instead of single header file)",
+      "version": "4.5.1",
+      "date": "Mon Dec 30 14:04:18 2024",
+      "timestamp": 1735567458,
+      "changes": null
     },
     "history": [
+      {
+        "comment": "Add support for the 'littlefs' file system",
+        "version": "4.5.0",
+        "date": "Fri Dec 20 15:16:17 2024",
+        "timestamp": 1734707777,
+        "changes": null
+      },
+      {
+        "comment": "Minor updates and add FDictionary class",
+        "version": "4.4.5",
+        "date": "Sun Dec 15 21:13:04 2024",
+        "timestamp": 1734297184,
+        "changes": null
+      },
+      {
+        "comment": "fix timer issue",
+        "version": "4.4.4",
+        "date": "Sun Oct 20 15:17:33 2024",
+        "timestamp": 1729437453,
+        "changes": null
+      },
+      {
+        "comment": "minor updates to the tca scripts",
+        "version": "4.4.3",
+        "date": "Sun Sep  8 15:25:28 2024",
+        "timestamp": 1725809128,
+        "changes": null
+      },
+      {
+        "comment": "Updates from the EPC repo",
+        "version": "4.4.2",
+        "date": "Tue Jun 18 18:02:50 2024",
+        "timestamp": 1718733770,
+        "changes": null
+      },
+      {
+        "comment": "Migrate to STM32 as the default target platform",
+        "version": "4.4.0",
+        "date": "Thu Apr 27 00:10:33 2023",
+        "timestamp": 1682554233,
+        "changes": "\"- Updated to newer version of NQBP2 for STM32 toolchains\\n- Added STM32F413ZH as the 'default' target platform\\n- Added stream IO/driver for the STM32F MCU (works with/for other STM32x MCUs)\\n- Adopted the gcc toolchain for STM32 MCUs\\n- Adopted stm32 SDKs for the F4 and F7 families of MCU\\n- Deprecated the RX62N platform\\n- Move the BSP Package into the colony core (i.e. the BSP package has been deprecated)\\n- Added the 'Micro Application' framework (Cpl::MApp)\\n- Updated the freertos package to 10.4.3-LTS-Patch-1 (and added support for Seggers' SystemView)\""
+      },
       {
         "comment": "Switch to NQBP GEN2 build engine",
         "version": "4.3.4",

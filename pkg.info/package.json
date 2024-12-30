@@ -5,12 +5,12 @@
         "pkgname": "colony.core",
         "pkgtype": "overlay",
         "virtualAdoption": false,
-        "adoptedDate": "Thu Apr 27 00:28:42 2023",
+        "adoptedDate": "Mon Dec 30 18:53:29 2024",
         "parentDir": null,
         "version": {
-          "semanticVersion": "4.4.0",
+          "semanticVersion": "4.5.1",
           "branch": null,
-          "tag": "OUTCAST2-main-4.4.0"
+          "tag": "OUTCAST2-main-4.5.1"
         },
         "repo": {
           "name": "colony.core",
@@ -24,12 +24,12 @@
         "pkgname": "catch",
         "pkgtype": "overlay",
         "virtualAdoption": false,
-        "adoptedDate": "Sun Nov 10 21:38:10 2024",
+        "adoptedDate": "Mon Dec 30 19:11:35 2024",
         "parentDir": null,
         "version": {
-          "semanticVersion": "2.13.7e",
+          "semanticVersion": "3.0.0",
           "branch": null,
-          "tag": "OUTCAST2-main-2.13.7e"
+          "tag": "OUTCAST2-main-3.0.0"
         },
         "repo": {
           "name": "catch",
@@ -41,17 +41,51 @@
         "pkgname": "nqbp2",
         "pkgtype": "readonly",
         "virtualAdoption": false,
-        "adoptedDate": "Sun Dec 15 20:30:35 2024",
+        "adoptedDate": "Mon Dec 30 19:12:31 2024",
         "parentDir": "xsrc",
         "version": {
-          "semanticVersion": "0.1.9",
+          "semanticVersion": "1.0.0",
           "branch": null,
-          "tag": "OUTCAST2-main-0.1.9"
+          "tag": "OUTCAST2-main-1.0.0"
         },
         "repo": {
           "name": "nqbp2",
           "type": "git",
           "origin": "https://github.com/johnttaylor"
+        }
+      },
+      {
+        "pkgname": "littlefs",
+        "pkgtype": "readonly",
+        "virtualAdoption": false,
+        "adoptedDate": "Mon Dec 30 19:12:52 2024",
+        "parentDir": "xsrc",
+        "version": {
+          "semanticVersion": null,
+          "branch": null,
+          "tag": "v2.10.0"
+        },
+        "repo": {
+          "name": "littlefs",
+          "type": "git",
+          "origin": "https://github.com/littlefs-project"
+        }
+      },
+      {
+        "pkgname": "catch2",
+        "pkgtype": "readonly",
+        "virtualAdoption": false,
+        "adoptedDate": "Mon Dec 30 19:12:10 2024",
+        "parentDir": "xsrc",
+        "version": {
+          "semanticVersion": null,
+          "branch": null,
+          "tag": "v3.7.1"
+        },
+        "repo": {
+          "name": "catch2",
+          "type": "git",
+          "origin": "https://github.com/catchorg"
         }
       }
     ]

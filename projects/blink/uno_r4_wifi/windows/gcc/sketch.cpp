@@ -21,25 +21,29 @@
 */
 
 #include "Bsp/Api.h"
+#include "Bsp/Renesas/uno_r4_wifi/gcc/console.h"
 
-//#include <Arduino.h>
-
-// the setup function runs once when you press reset or power the board
+// the setup function   runs once when you press reset or power the board
 void setup()
 {
     // Initialize the board
     Bsp_Api_initialize();
     Bsp_beginArduinoSerialObject( 115200, SERIAL_8N1 );
 
-    Serial.println( "Blink Applet" );
-    Serial.println( "" );
+    Cpl::Io::InputOutput& io = Bsp_Serial();
+    io.write( "Blink Applet\n" );
 }
 
 
 // the loop function runs over and over again forever
 void loop()
 {
-    Serial.println( "..blinking..." );
+    static size_t count = 0;
+    Cpl::Io::InputOutput& io = Bsp_Serial();
+    char msg[32+1] = {0};
+    sprintf( msg, "blinking... %lu\n", count );
+    io.write( msg );
+    count++;
 
     digitalWrite( LED_BUILTIN, HIGH );  // turn the LED on (HIGH is the voltage level)
     delay( 1000 );                      // wait for a second
